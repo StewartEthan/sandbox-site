@@ -5,7 +5,7 @@ var express = require('express'),
 var app = express();
 
 // Specify the port (I use 3000 as a default for personal dev)
-app.set('port', (/*process.env.PORT ||*/ 9000));
+app.set('port', (process.env.PORT || 3000));
 
 // Specify where static assets should be loaded from
 app.use(express.static('assets'));
