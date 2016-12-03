@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%
+    var page = page || {};
+    page.title = "Recipe Beautifier";
+  %>
+  <% include ../partials/head-tags %>
+  <style>
+    @font-face {
+      font-family: "Pokemon Solid";
+      src: url('/assets/fonts/Pokemon Solid.ttf');
+    }
+    @font-face {
+      font-family: "Pokemon Hollow";
+      src: url('/assets/fonts/Pokemon Hollow.ttf');
+    }
+    @font-face {
+      font-family: "Calibri Light";
+      src: url('/assets/fonts/calibril.ttf');
+    }
+
+    .form-wrapper {
+      margin: 0 auto;
+      max-width: 300px;
+    }
+
+    .form-wrapper .field-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      margin-bottom: 20px;
+    }
+
+    .form-wrapper .field-group input {
+      border: 1px solid #D0D0D0;
+      font-family: verdana, sans-serif;
+      font-size: 0.8em;
+      padding: 5px;
+    }
+
+    .form-wrapper .field-group.force-block,
+    .form-wrapper #directions,
+    .form-wrapper #ingredients {
+      display: block;
+    }
+
+    .form-wrapper .field-group input,
+    .form-wrapper .field-group textarea {
+      border-radius: 5px;
+    }
+
+    .form-wrapper .field-group textarea {
+      border-color: #D0D0D0;
+      margin-top: 10px;
+    }
+
+    .form-wrapper #directions,
+    .form-wrapper #ingredients {
+      height: 200px;
+      width: calc(100% - 6px);
+    }
+
+    .headings {
+      text-align: center;
+    }
+
+    .headings h1 {
+      color: teal;
+      font-family: "Pokemon Solid", "Trebuchet MS", sans-serif;
+      font-size: 18pt;
+      letter-spacing: 5px;
+    }
+    .headings h2 {
+      font-family: "Pokemon Hollow", "Trebuchet MS", sans-serif;
+      font-size: 12pt;
+      letter-spacing: 3px;
+      margin-top: 0;
+    }
+    .yield {
+      font-family: "Calibri Light", verdana, sans-serif;
+      font-size: 10pt;
+      margin-bottom: 40px;
+    }
+
+    .recipe-wrapper label {
+      color: teal;
+      font-family: "Pokemon Solid", "Trebuchet MS", sans-serif;
+      letter-spacing: 2px;
+    }
+
+    .recipe-wrapper {
+      margin: 0 auto;
+      max-width: 800px;
+    }
+
+    .recipe-wrapper ul,
+    .recipe-wrapper ol {
+      font-family: "Calibri Light", verdana, sans-serif;
+    }
+
+    .main-heading {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <% include ../partials/header %>
+    <main>
+      <div>
+        <h1 class="main-heading">Recipe Beautifier</h1>
+        <div class="form-wrapper">
+          <div class="field-group">
+            <label>Title</label>
+            <input type="text" id="title">
+          </div>
+          <div class="field-group">
+            <label>Subtitle</label>
+            <input type="text" id="subtitle">
+          </div>
+          <div class="field-group">
+            <label>Yield</label>
+            <input type="text" id="yield">
+          </div>
+          <div class="field-group force-block">
+            <label>Ingredients</label>
+            <textarea id="ingredients"></textarea>
+          </div>
+          <div class="field-group force-block">
+            <label>Directions</label>
+            <textarea id="directions"></textarea>
+          </div>
+          <div id="beautifyBtn" class="custom-button">
+            Beautify
+          </div>
+        </div>
+        <div class="recipe-wrapper hidden">
+          <div class="headings">
+            <h1 class="title">Spicy Apple Cider Pancakes</h1>
+            <h2 class="subtitle">Stovetop</h2>
+            <p class="yield">
+              Yield: 22 pounds
+            </p>
+          </div>
+          <div>
+            <label>Ingredients</label>
+            <ul class="ingredients">
+              <li>2 cups Bisquick baking mix</li>
+              <li>1/2 tsp cinnamon</li>
+              <li>1 1/3 C milk</li>
+              <li>3/4 C grated Granny Smith apple (about 2 medium apples)</li>
+            </ul>
+          </div>
+          <div>
+            <label>Directions</label>
+            <ol class="directions">
+              <li>
+                Mix first 3 ingredients, then stir in apples
+              </li>
+              <li>
+                Cook pancakes as normal
+              </li>
+              <li>
+                Serve with cider sauce if desired top with whipped cream or sour cream
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </main>
+    <% include ../partials/footer %>
+  </div>
+  <script>
+  function createRecipe(fieldGroups) {
+    var recipe = {};
+
+    for (var i = 0; i < fieldGroups.length; i++) {
+      var fieldGroup = fieldGroups[i];
+      var input = fieldGroup.querySelector('input') || fieldGroup.querySelector('textarea');
+      var key = input.getAttribute('id');
+      var content = input.value;
+
+      if (key === 'ingredients' || key === 'directions') {
+        // Split ingredients and directions into arrays with no empty string content
+        content = content.split('\n').filter(function(el) {
+          return el !== undefined &&
+                 el !== null &&
+                 el !== '';
+        });
+      }
+
+      recipe[key] = content;
+    }
+
+    return recipe;
+  }
+
+  var formWrapper = document.querySelector('.form-wrapper');
+  var recipeWrapper = document.querySelector('.recipe-wrapper');
+  var beautifyBtn = document.querySelector('#beautifyBtn');
+
+  beautifyBtn.addEventListener('click', function() {
+    // Grab recipe info
+    var fieldGroups = document.querySelectorAll('.form-wrapper .field-group');
+    var recipe = createRecipe(fieldGroups);
+
+    // Populate fields in recipe view
+    for (var key in recipe) {
+      var selector = '.' + key;
+      var elem = document.querySelector('.recipe-wrapper ' + selector);
+      // Hide any unspecified portions of the recipe
+      if (recipe[key] === null || recipe[key] === undefined || recipe[key] === '') {
+        elem.className += ' hidden';
+      }
+      if (key === 'ingredients' || key === 'directions') {
+        elem.innerHTML = '';
+        for (var item of recipe[key]) {
+          elem.innerHTML += '<li>' + item + '</li>';
+        }
+      } else {
+        elem.innerHTML = recipe[key];
+      }
+    }
+
+    // Hide form and show recipe
+    formWrapper.className += ' hidden';
+    document.querySelector('.main-heading').className += ' hidden';
+    recipeWrapper.className = recipeWrapper.className.replace('hidden', '');
+  });
+  </script>
+</body>
+</html>

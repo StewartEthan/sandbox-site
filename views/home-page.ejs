@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%
+      var page = page || {};
+      page.title = "Home Page";
+    %>
+    <% include partials/head-tags %>
+  </head>
+
+  <body>
+    <div>
+      <% include partials/header %>
+      <main>
+        <div>
+          <h1>Home Page</h1>
+          <p>
+              This website is basically my web development sandbox/portfolio.
+              No guarantees are made on how frequently I update the site,
+              but anytime I make a web app or custom HTML component that
+              I think is cool or useful, I will put it here. Click the Apps link to see
+              what apps I have created. Stay tuned for upcoming sections and
+              pages containing custom HTML elements (for
+              <a href="http://polymer-project.org" target="_blank">Polymer</a>),
+              some bash scripts and shortcuts, potentially some technical blogs,
+              and a general About section.
+          </p>
+        </div>
+      </main>
+      <% include partials/footer %>
+    </div>
+  </body>
+</html>
