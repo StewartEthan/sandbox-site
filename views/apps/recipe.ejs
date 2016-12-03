@@ -22,7 +22,11 @@
 
     .form-wrapper {
       margin: 0 auto;
-      max-width: 300px;
+      max-width: 350px;
+    }
+
+    .form-wrapper > h1 {
+      white-space: nowrap;
     }
 
     .form-wrapper .field-group {
@@ -84,6 +88,9 @@
       font-size: 10pt;
       margin-bottom: 40px;
     }
+    .yield::before {
+      content: "Yields: ";
+    }
 
     .recipe-wrapper label {
       color: teal;
@@ -93,7 +100,7 @@
 
     .recipe-wrapper {
       margin: 0 auto;
-      max-width: 800px;
+      max-width: 600px;
     }
 
     .recipe-wrapper ul,
@@ -101,8 +108,42 @@
       font-family: "Calibri Light", verdana, sans-serif;
     }
 
+    .recipe-wrapper .recipe-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      width: 100%;
+    }
+
+    .recipe-wrapper .recipe-buttons .custom-button {
+      margin: 0;
+      width: 40%;
+    }
+
     .main-heading {
       text-align: center;
+    }
+
+    @media screen and (max-width: 600px) {
+      .recipe-wrapper .recipe-buttons {
+        display: block;
+      }
+
+      .recipe-wrapper .recipe-buttons .custom-button {
+        margin: 10px auto;
+        width: 100%;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+      }
+
+      header, nav, footer,
+      .recipe-buttons {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -112,8 +153,8 @@
     <% include ../partials/header %>
     <main>
       <div>
-        <h1 class="main-heading">Recipe Beautifier</h1>
         <div class="form-wrapper">
+          <h1 class="main-heading">Recipe Beautifier</h1>
           <div class="field-group">
             <label>Title</label>
             <input type="text" id="title">
@@ -169,6 +210,15 @@
               </li>
             </ol>
           </div>
+
+          <div class="recipe-buttons">
+            <div id="newRecipeBtn" class="custom-button">
+              New Recipe
+            </div>
+            <div id="editRecipeBtn" class="custom-button">
+              Edit Recipe
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -199,9 +249,25 @@
     return recipe;
   }
 
+  function editRecipe() {
+    addClass(recipeWrapper, 'hidden');
+    removeClass(formWrapper, 'hidden');
+
+    document.querySelector('.form-wrapper #title').focus();
+  }
+
+  function emptyFields() {
+    document.querySelectorAll('.form-wrapper .field-group').forEach(function(fieldGroup) {
+      var input = fieldGroup.querySelector('input') || fieldGroup.querySelector('textarea');
+      input.value = '';
+    });
+  }
+
   var formWrapper = document.querySelector('.form-wrapper');
   var recipeWrapper = document.querySelector('.recipe-wrapper');
   var beautifyBtn = document.querySelector('#beautifyBtn');
+  var newRecipeBtn = document.querySelector('#newRecipeBtn');
+  var editRecipeBtn = document.querySelector('#editRecipeBtn');
 
   beautifyBtn.addEventListener('click', function() {
     // Grab recipe info
@@ -214,7 +280,9 @@
       var elem = document.querySelector('.recipe-wrapper ' + selector);
       // Hide any unspecified portions of the recipe
       if (recipe[key] === null || recipe[key] === undefined || recipe[key] === '') {
-        elem.className += ' hidden';
+        addClass(elem, 'hidden');
+      } else {
+        removeClass(elem, 'hidden');
       }
       if (key === 'ingredients' || key === 'directions') {
         elem.innerHTML = '';
@@ -227,10 +295,29 @@
     }
 
     // Hide form and show recipe
-    formWrapper.className += ' hidden';
-    document.querySelector('.main-heading').className += ' hidden';
-    recipeWrapper.className = recipeWrapper.className.replace('hidden', '');
+    addClass(formWrapper, 'hidden');
+    removeClass(recipeWrapper, 'hidden');
   });
+  newRecipeBtn.addEventListener('click', function() {
+    // Confirm the choice
+    var message = "By continuing, all previous recipe information will be deleted";
+    // TODO: Use custom modal of some sort instead
+    if (confirm(message)) {
+      // Empty form fields
+      emptyFields();
+
+      // Call editRecipe for common logic
+      editRecipe();
+    }
+  });
+  editRecipeBtn.addEventListener('click', function() {
+    // Call the editRecipe function
+    editRecipe();
+  });
+
+  window.onload = function() {
+    document.querySelector('.form-wrapper #title').focus();
+  }
   </script>
 </body>
 </html>
