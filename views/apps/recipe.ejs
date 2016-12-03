@@ -300,9 +300,11 @@
       }
     }
 
-    // Hide form and show recipe
-    addClass(formWrapper, 'hidden');
-    removeClass(recipeWrapper, 'hidden');
+    // Hide form and show recipe after brief delay
+    setTimeout(function() {
+      addClass(formWrapper, 'hidden');
+      removeClass(recipeWrapper, 'hidden');
+    }, 250);
   });
   newRecipeBtn.addEventListener('click', function() {
     // Confirm the choice
