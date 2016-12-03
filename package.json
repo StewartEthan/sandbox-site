@@ -5,12 +5,17 @@
   "main": "app.js",
   "dependencies": {
     "ejs": "^2.5.2",
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "stylus": "^0.49.1"
   },
   "engines": {
     "node": "6.7.x"
   },
   "scripts": {
+    "build-css": "stylus assets/css/style.styl -o assets/css/compiled",
+    "watch-css": "stylus assets/css/style.styl -o assets/css/compiled -w",
+    "clean": "rm -rf assets/css/compiled && mkdir -p assets/css/compiled",
+    "build": "npm run clean && npm run build-css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ethan Stewart",
