@@ -291,7 +291,9 @@
       if (key === 'ingredients' || key === 'directions') {
         elem.innerHTML = '';
         for (var item of recipe[key]) {
-          elem.innerHTML += '<li>' + item + '</li>';
+          var child = document.createElement('li');
+          child.innerHTML = item;
+          elem.appendChild(child);
         }
       } else {
         elem.innerHTML = recipe[key];
