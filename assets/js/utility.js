@@ -58,3 +58,14 @@ function toggleClass(elem, classStr) {
     console.error("Could not toggle class for elem: ", elem, err);
   }
 }
+
+
+function scrollToTop() {
+  if (window.scrollTo) {
+    window.scrollTo(0,0);
+  } else {
+    while (document.body.scrollTop != 0 && document.documentElement.scrollTop != 0) {
+      scrollBy(0,-50);
+    }
+  }
+}
