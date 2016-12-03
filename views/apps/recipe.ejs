@@ -124,6 +124,22 @@
       text-align: center;
     }
 
+    .spinner {
+      border: 16px solid #f3f3f3;
+      border-top: 16px solid #002265;
+      border-right: 16px solid #002265;
+      border-radius: 50%;
+      margin: 10px auto 0;
+      width: 120px;
+      height: 120px;
+      animation: spin 1.5s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     @media screen and (max-width: 600px) {
       .recipe-wrapper .recipe-buttons {
         display: block;
@@ -145,7 +161,7 @@
       }
 
       header, nav, footer,
-      .recipe-buttons {
+      .recipe-buttons, .spinner {
         display: none !important;
       }
     }
@@ -183,6 +199,7 @@
             Beautify
           </div>
         </div>
+        <div class="spinner hidden"></div>
         <div class="recipe-wrapper hidden">
           <div class="headings">
             <h1 class="title">Spicy Apple Cider Pancakes</h1>
@@ -269,6 +286,7 @@
 
   var formWrapper = document.querySelector('.form-wrapper');
   var recipeWrapper = document.querySelector('.recipe-wrapper');
+  var spinner = document.querySelector('.spinner');
   var beautifyBtn = document.querySelector('#beautifyBtn');
   var newRecipeBtn = document.querySelector('#newRecipeBtn');
   var editRecipeBtn = document.querySelector('#editRecipeBtn');
@@ -301,10 +319,13 @@
     }
 
     // Hide form and show recipe after brief delay
+    addClass(formWrapper, 'hidden');
+    scrollToTop();
+    removeClass(spinner, 'hidden');
     setTimeout(function() {
-      addClass(formWrapper, 'hidden');
+      addClass(spinner, 'hidden');
       removeClass(recipeWrapper, 'hidden');
-    }, 250);
+    }, 1000);
   });
   newRecipeBtn.addEventListener('click', function() {
     // Confirm the choice
