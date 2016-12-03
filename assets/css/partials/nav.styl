@@ -31,10 +31,16 @@ nav {
           text-decoration: none;
           text-transform: uppercase;
 
-          &:hover {
+          &:hover,
+          &:focus {
             font-weight: 900;
             letter-spacing: 5px;
-          } /* :hover */
+          } /* :hover, :focus */
+
+          &:focus {
+            outline: none;
+            text-decoration: underline;
+          } /* :focus */
 
           &:visited {
             color: white;
