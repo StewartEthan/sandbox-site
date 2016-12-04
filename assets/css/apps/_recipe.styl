@@ -58,7 +58,8 @@
   /*max-width: 1000px;*/
 
   label {
-    color: teal;
+    color: #76b7db;
+    /*color: #1c6e8c;*/
     font-family: "Pokemon Solid", "Trebuchet MS", sans-serif;
     letter-spacing: 2px;
   }
@@ -68,32 +69,48 @@
   }
 
   .headings {
+    margin-bottom: 100px;
     text-align: center;
 
     h1 {
-      color: teal;
+      color: #76b7db;
+      /*color: #1c6e8c;*/
       font-family: "Pokemon Solid", "Trebuchet MS", sans-serif;
       font-size: 18pt;
       letter-spacing: 5px;
     }
 
     h2 {
+      /*color: #325187;*/
+      /*color: #1d415e;*/
       font-family: "Pokemon Hollow", "Trebuchet MS", sans-serif;
       font-size: 12pt;
       letter-spacing: 3px;
       margin-top: 0;
     }
 
-    .yield {
+    /*.yield {
       font-family: "Calibri Light", verdana, sans-serif;
       font-size: 10pt;
       margin-bottom: 40px;
+      text-align: left;
 
       &:before {
         content: "Yields: ";
       }
-    }
+    }*/
   } /* .headings */
+
+  .yield {
+    font-family: "Calibri Light", verdana, sans-serif;
+    font-size: 12pt;
+    margin-top: 50px;
+    text-align: center;
+
+    &:before {
+      content: "Yields: ";
+    }
+  }
 
   .recipe-buttons {
     display: flex;
@@ -139,6 +156,10 @@
       &.headings {
         margin-left: auto;
       }
+    }
+
+    & .yield {
+      margin-left: -80px;
     }
   }
 }
