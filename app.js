@@ -29,11 +29,17 @@ app.get('/apps/:appName', function(req, res) {
   res.render('apps/'+req.params.appName);
 });
 // /code routes
-
+app.get('/code', function(req, res) {
+  res.render('code');
+});
 // /blog routes
-
+app.get('/blog', function(req, res) {
+  res.render('blog');
+});
 // /about route
-
+app.get('/about', function(req, res) {
+  res.render('about');
+});
 // Start listening
 app.listen(app.get('port'), function() {
   console.log('Portfolio site is running on port ', app.get('port'));
