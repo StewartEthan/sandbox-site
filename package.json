@@ -12,8 +12,8 @@
     "node": "6.7.x"
   },
   "scripts": {
-    "build-css": "stylus assets/css/style.styl -o assets/css/compiled",
-    "watch-css": "stylus assets/css/style.styl -o assets/css/compiled -w",
+    "build-css": "stylus assets/css/*.styl -o assets/css/compiled",
+    "watch-css": "stylus assets/css/*.styl -o assets/css/compiled -w",
     "clean": "rm -rf assets/css/compiled && mkdir -p assets/css/compiled",
     "build": "npm run clean && npm run build-css",
     "test": "echo \"Error: no test specified\" && exit 1"
