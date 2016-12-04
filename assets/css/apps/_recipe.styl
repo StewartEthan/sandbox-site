@@ -54,7 +54,8 @@
 
 .recipe-wrapper {
   margin: 0 auto;
-  max-width: 600px;
+  margin-left: 50px;
+  /*max-width: 1000px;*/
 
   label {
     color: teal;
@@ -130,5 +131,14 @@
   header, nav, footer,
   .recipe-buttons {
     display: none !important;
+  }
+
+  .recipe-wrapper {
+    & > div {
+      margin-left: -80px;
+      &.headings {
+        margin-left: auto;
+      }
+    }
   }
 }
