@@ -1,0 +1,134 @@
+@font-face {
+  font-family: "Pokemon Solid";
+  src: url('/assets/fonts/Pokemon Solid.ttf');
+}
+@font-face {
+  font-family: "Pokemon Hollow";
+  src: url('/assets/fonts/Pokemon Hollow.ttf');
+}
+@font-face {
+  font-family: "Calibri Light";
+  src: url('/assets/fonts/calibril.ttf');
+}
+
+.form-wrapper {
+  margin: 0 auto;
+  max-width: 350px;
+
+  & > .main-heading {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .field-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+
+    input, textarea {
+      border-radius: 5px;
+    }
+
+    input {
+      border: 1px solid #D0D0D0;
+      font-family: verdana, sans-serif;
+      font-size: 0.8em;
+      padding: 5px;
+    }
+
+    textarea {
+      border-color: #D0D0D0;
+      height: 200px;
+      margin-top: 10px;
+      width: calc(100% - 6px);
+    }
+
+    &.force-block {
+      display: block;
+    }
+  }
+}
+
+.recipe-wrapper {
+  margin: 0 auto;
+  max-width: 600px;
+
+  label {
+    color: teal;
+    font-family: "Pokemon Solid", "Trebuchet MS", sans-serif;
+    letter-spacing: 2px;
+  }
+
+  ol, ul {
+    font-family: "Calibri Light", verdana, sans-serif;
+  }
+
+  .headings {
+    text-align: center;
+
+    h1 {
+      color: teal;
+      font-family: "Pokemon Solid", "Trebuchet MS", sans-serif;
+      font-size: 18pt;
+      letter-spacing: 5px;
+    }
+
+    h2 {
+      font-family: "Pokemon Hollow", "Trebuchet MS", sans-serif;
+      font-size: 12pt;
+      letter-spacing: 3px;
+      margin-top: 0;
+    }
+
+    .yield {
+      font-family: "Calibri Light", verdana, sans-serif;
+      font-size: 10pt;
+      margin-bottom: 40px;
+
+      &:before {
+        content: "Yields: ";
+      }
+    }
+  } /* .headings */
+
+  .recipe-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    width: 100%;
+
+    .custom-button {
+      margin: 0;
+      width: 40%;
+    }
+  }
+} /* .recipe-wrapper */
+
+@media screen and (max-width: 600px) {
+  .recipe-wrapper .recipe-buttons {
+    display: block;
+
+    .custom-button {
+      margin: 10px auto;
+      width: 100%;
+    }
+  }
+}
+
+@media print {
+  html, body {
+    height: auto;
+  }
+
+  body {
+    background: none;
+  }
+
+  header, nav, footer,
+  .recipe-buttons {
+    display: none !important;
+  }
+}
