@@ -17,7 +17,7 @@
 
   & > .main-heading {
     text-align: center;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
   }
 
   .field-group {
@@ -131,6 +131,16 @@
 
     .custom-button {
       margin: 10px auto;
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .form-wrapper .field-group {
+    display: block;
+    input, textarea {
+      margin-top: 10px;
       width: 100%;
     }
   }
