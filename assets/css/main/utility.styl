@@ -1,4 +1,13 @@
 @media all {
+  .arrow-list {
+    list-style: none;
+    margin-left: -15px;
+
+    li:before {
+      content: "\27A5\00a0";
+    }
+  }
+
   .custom-button {
     background-color: #002265;
     border-radius: 10px;
@@ -12,11 +21,34 @@
     padding: 7px;
   }
 
+  .fake-link {
+    color: #002265;
+    cursor: pointer;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 13pt;
+    text-decoration: underline;
+  }
+
   .hidden {
     display: none;
   }
 
   .invis {
     visibility: hidden;
+  }
+
+  .spinner {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #002265;
+    border-right: 16px solid #002265;
+    border-radius: 50%;
+    margin: 10px auto;
+    width: 120px;
+    height: 120px;
+    animation: spin 1.5s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 }
