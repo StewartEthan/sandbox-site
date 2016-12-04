@@ -6,150 +6,7 @@
     page.title = "Recipe Beautifier";
   %>
   <% include ../partials/head-tags %>
-  <style>
-    @font-face {
-      font-family: "Pokemon Solid";
-      src: url('/assets/fonts/Pokemon Solid.ttf');
-    }
-    @font-face {
-      font-family: "Pokemon Hollow";
-      src: url('/assets/fonts/Pokemon Hollow.ttf');
-    }
-    @font-face {
-      font-family: "Calibri Light";
-      src: url('/assets/fonts/calibril.ttf');
-    }
-
-    .form-wrapper {
-      margin: 0 auto;
-      max-width: 350px;
-    }
-
-    .form-wrapper > h1 {
-      white-space: nowrap;
-    }
-
-    .form-wrapper .field-group {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: space-between;
-
-      margin-bottom: 20px;
-    }
-
-    .form-wrapper .field-group input {
-      border: 1px solid #D0D0D0;
-      font-family: verdana, sans-serif;
-      font-size: 0.8em;
-      padding: 5px;
-    }
-
-    .form-wrapper .field-group.force-block,
-    .form-wrapper #directions,
-    .form-wrapper #ingredients {
-      display: block;
-    }
-
-    .form-wrapper .field-group input,
-    .form-wrapper .field-group textarea {
-      border-radius: 5px;
-    }
-
-    .form-wrapper .field-group textarea {
-      border-color: #D0D0D0;
-      margin-top: 10px;
-    }
-
-    .form-wrapper #directions,
-    .form-wrapper #ingredients {
-      height: 200px;
-      width: calc(100% - 6px);
-    }
-
-    .headings {
-      text-align: center;
-    }
-
-    .headings h1 {
-      color: teal;
-      font-family: "Pokemon Solid", "Trebuchet MS", sans-serif;
-      font-size: 18pt;
-      letter-spacing: 5px;
-    }
-    .headings h2 {
-      font-family: "Pokemon Hollow", "Trebuchet MS", sans-serif;
-      font-size: 12pt;
-      letter-spacing: 3px;
-      margin-top: 0;
-    }
-    .yield {
-      font-family: "Calibri Light", verdana, sans-serif;
-      font-size: 10pt;
-      margin-bottom: 40px;
-    }
-    .yield::before {
-      content: "Yields: ";
-    }
-
-    .recipe-wrapper label {
-      color: teal;
-      font-family: "Pokemon Solid", "Trebuchet MS", sans-serif;
-      letter-spacing: 2px;
-    }
-
-    .recipe-wrapper {
-      margin: 0 auto;
-      max-width: 600px;
-    }
-
-    .recipe-wrapper ul,
-    .recipe-wrapper ol {
-      font-family: "Calibri Light", verdana, sans-serif;
-    }
-
-    .recipe-wrapper .recipe-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 40px;
-      width: 100%;
-    }
-
-    .recipe-wrapper .recipe-buttons .custom-button {
-      margin: 0;
-      width: 40%;
-    }
-
-    .main-heading {
-      text-align: center;
-    }
-
-    @media screen and (max-width: 600px) {
-      .recipe-wrapper .recipe-buttons {
-        display: block;
-      }
-
-      .recipe-wrapper .recipe-buttons .custom-button {
-        margin: 10px auto;
-        width: 100%;
-      }
-    }
-
-    @media print {
-      html, body {
-        height: auto;
-      }
-
-      body {
-        background: none;
-      }
-
-      header, nav, footer,
-      .recipe-buttons {
-        display: none !important;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/compiled/recipe.css">
 </head>
 
 <body>
@@ -173,11 +30,11 @@
           </div>
           <div class="field-group force-block">
             <label>Ingredients</label>
-            <textarea id="ingredients"></textarea>
+            <textarea id="ingredients" class="force-block"></textarea>
           </div>
           <div class="field-group force-block">
             <label>Directions</label>
-            <textarea id="directions"></textarea>
+            <textarea id="directions" class="force-block"></textarea>
           </div>
           <div id="beautifyBtn" class="custom-button">
             Beautify
