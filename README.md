@@ -9,7 +9,7 @@ This site has two main purposes for existing:
 
 **NOTE:** At the time of the initial writing of this README, nothing is live yet. As each section goes live on the site, it will have a checkmark near its heading.
 
-### Apps
+### [x]Apps
 
 The main page of this section will link to all of my completed and in-development web apps. Different apps may be built with different libraries or techniques, and I will try to include some sort of explanation for anyone wanting to see what different tools are capable of
 
