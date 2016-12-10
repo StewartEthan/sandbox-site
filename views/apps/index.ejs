@@ -42,7 +42,7 @@
     </div>
 
     <script type="text/javascript">
-      document.querySelectorAll('.more-link').forEach(function(elem) {
+      Array.from(document.querySelectorAll('.more-link')).forEach(function(elem) {
         elem.addEventListener('click', function() {
           var anchor = this.querySelector('span.fake-link');
           var span = this.querySelectorAll('span')[1];
