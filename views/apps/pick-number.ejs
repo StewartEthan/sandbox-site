@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%
+      var page = page || {};
+      page.title = "Pick a Number";
+    %>
+    <% include ../partials/head-tags %>
+    <style media="screen">
+      main > div {
+        text-align: center;
+        width: 50% !important;
+      }
+      .add-option {
+        border: 1px solid #D0D0D0;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-block;
+        padding: 5px;
+        width: 40%;
+      }
+
+      .add-option span {
+        margin: 0 5px 0 -10px;
+      }
+
+      .custom-button {
+        font-size: 1.25em;
+        width: 40%;
+      }
+
+      .options input {
+        border: 1px solid #D0D0D0;
+        border-radius: 5px;
+        font-family: verdana, sans-serif;
+        font-size: 1em;
+        margin: 5px auto;
+        padding: 5px;
+        width: 40%;
+      }
+
+      .range {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 auto;
+        width: 40%;
+      }
+
+      .range input {
+        border: 1px solid #D0D0D0;
+        border-radius: 5px;
+        font-size: 1em;
+        margin: 5px 0;
+        padding: 5px;
+        width: 50%;
+      }
+
+      .range-error {
+        margin: 5px auto;
+        text-align: left;
+        width: 40%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <% include ../partials/header %>
+      <main>
+        <div>
+          <h1>Pick a Number</h1>
+          <div class="options">
+            <input type="text" class="force-block" placeholder="Option 1">
+            <input type="text" class="force-block" placeholder="Option 2">
+          </div>
+          <div class="add-option">
+            <span>+</span>Add Option
+          </div>
+          <div class="hidden error range-error">Invalid range</div>
+          <div class="range">
+            <input type="number" id="min" value="1" placeholder="Min">
+            &nbsp;to&nbsp;
+            <input type="number" id="max" value="100" placeholder="Max">
+          </div>
+          <div class="custom-button pick-number-btn">Pick a Number</div>
+        </div>
+      </main>
+      <% include ../partials/footer %>
+    </div>
+    <script>
+      // Globals
+      const addOptionButton = document.querySelector('.add-option');
+      const optionsInputs = document.querySelector('.options');
+      const pickNumberBtn = document.querySelector('.pick-number-btn');
+      const rangeError = document.querySelector('.range-error');
+
+      var numOptions = 2;
+
+      // Event listeners
+      addOptionButton.addEventListener('click', e => {
+        let option = document.createElement('input');
+        option.classList.add('force-block');
+        option.placeholder = `Option ${++numOptions}`;
+        optionsInputs.appendChild(option);
+      });
+      pickNumberBtn.addEventListener('click', e => {
+        let options = [],
+            min = parseFloat(document.querySelector('#min').value),
+            max = parseFloat(document.querySelector('#max').value);
+        document.querySelectorAll('.options input').forEach(option => {
+          if (options.value) {
+            options.push(option.value);
+          }
+        });
+        if ((max - min + 1) < options.length) {
+          throw new Error("You have too many options for the range provided. Get rid of some of the options or provide a larger range")
+        }
+      });
+      document.querySelectorAll('.range input').forEach(input => {
+        input.addEventListener('change', e => {
+
+        });
+      });
+
+      // Functions
+    </script>
+  </body>
+</html>
