@@ -6,7 +6,8 @@
       page.title = "Apps";
 
       links = [
-        { title: "Recipe Beautifier", href: "/apps/recipe", desc: "Adds printer-friendly styles to user-provided values to make a clean, readable recipe" }
+        { title: "Recipe Beautifier", href: "/apps/recipe"     , desc: "Adds printer-friendly styles to user-provided values to make a clean, readable recipe"    },
+        { title: "Pick a Number"    , href: "/apps/pick-number", desc: "Makes it easier to assign random numbers to different options, useful for decision making"}
       ];
     %>
     <% include ../partials/head-tags %>
@@ -26,7 +27,8 @@
             information about each app is on its page.
           </p>
           <ul class="arrow-list">
-            <% for (var i = 0, link = links[i]; i < links.length; i++) { %>
+            <% for (var i = 0, link; i < links.length; i++) { %>
+              <% link = links[i]; %>
               <li>
                 <a href="<%- link.href %>"><%- link.title %></a>
                 <div class="more-link">
