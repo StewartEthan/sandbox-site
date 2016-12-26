@@ -32,8 +32,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="{ ES }">
 
-<!-- Bring in utility functions -->
-<script src="/assets/js/utility.js"></script>
+<!-- Bring in utility functions unless explicitly rejected -->
+<% if (page.noUtilities === true) { %>
+  <script src="/assets/js/utility.js"></script>
+<% } %>
 
 <!-- Polyfill loader -->
 <!-- Uncomment when any needs are discovered -->
