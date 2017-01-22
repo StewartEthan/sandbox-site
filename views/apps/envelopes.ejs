@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Envelopes</title>
+    <style>
+      :root {
+        font-size: 32px;
+
+        --transaction-bg-color: skyblue;
+      }
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        -ms-overflow-style: none;  // IE 10+
+        overflow: -moz-scrollbars-none;  // Firefox
+      }
+      body::-webkit-scrollbar {
+        display: none;
+      }
+      main > div {
+        display: flex;
+        flex-direction: column;
+      }
+      .amount::before {
+        content: "$";
+      }
+
+      .envelope {
+        background-color: green;
+        border: 2px solid black;
+        border-radius: 35px;
+        box-shadow: 3px 3px 10px gray;
+        color: white;
+        cursor: pointer;
+        font-size: 3rem;
+        height: 15vh;
+        margin: 2vh 5vw;
+        /*padding: 0 5vw;*/
+
+        /*Flexbox*/
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .envelope > * {
+        cursor: inherit;
+        margin: 0 5vw;
+      }
+
+      .envelope-edit .controls {
+        background-color: blue;
+        color: white;
+        height: 15vh;
+
+        /*Fixed*/
+        position: fixed;
+        top: 0;
+        width: 100vw;
+
+        /*Flexbox*/
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      .envelope-edit .controls > div {
+        border: 1px solid red;
+        cursor: pointer;
+        font-size: 2rem;
+        padding: 25px 0;
+        text-align: center;
+
+        /*Flexbox*/
+        flex-grow: 1;
+      }
+
+      .envelope-edit .controls .envelope-name {
+        flex-grow: 2;
+        font-size: 2rem;
+      }
+
+      .envelope-edit .controls .amount {
+        font-size: 1.25rem;
+      }
+
+      .envelope-view form {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        width: 85vw;
+      }
+
+      .envelope-view form > * {
+        border: 1px solid black;
+        font-size: 2.5rem;
+        padding: 1vh 0;
+        padding-left: 3vw;
+        margin: 1vh 2vw;
+      }
+
+      .envelope-view form > div {
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+      }
+
+      .envelope-view form input[type="submit"] {
+        flex-grow: 1;
+        font-size: 2rem;
+        margin: 0;
+        padding: 5%;
+      }
+
+      .envelope-view img {
+        cursor: pointer;
+        margin: 0 auto;
+        width: 20%;
+      }
+
+      .transactions {
+        background-color: var(--transaction-bg-color);
+        font-size: 1.5rem;
+        margin-top: 15vh;
+        min-height: 85vh;
+
+        display: flex;
+        flex-direction: column;
+      }
+
+      .transactions .transaction {
+        background-color: var(--transaction-bg-color);
+        border: 2px solid black;
+        height: 6vh;
+
+        /*Flexbox*/
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      /*Utilities*/
+      .custom-button {
+        background-color: #002265;
+        border-radius: 10px;
+        cursor: pointer;
+        color: white;
+        font-size: 1.5em;
+        margin: 20px auto;
+        text-align: center;
+        text-shadow: 1.5px 1.5px 3px black;
+        /*width: 20%;*/
+        padding: 7px;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .spinner {
+        border: 16px solid #f3f3f3;
+        border-top: 16px solid #002265;
+        border-right: 16px solid #002265;
+        border-radius: 50%;
+        margin: 10px auto;
+        width: 75px;
+        height: 75px;
+        animation: spin 1.5s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <main>
+        <div class="envelope-view">
+          <div class="wrapper">
+            <div class="envelope">
+              <label>Groceries</label>
+              <span class="amount">180</span>
+            </div>
+            <div class="envelope">
+              <label>Kira</label>
+              <span class="amount">40</span>
+            </div>
+            <div class="envelope">
+              <label>Gas</label>
+              <span class="amount">50</span>
+            </div>
+            <div class="envelope">
+              <label>Rent</label>
+              <span class="amount">510</span>
+            </div>
+            <div class="envelope">
+              <label>Ethan</label>
+              <span class="amount">30</span>
+            </div>
+            <div class="envelope">
+              <label>Tiffany</label>
+              <span class="amount">30</span>
+            </div>
+          </div>
+          <form name="createEnvelope">
+            <input type="text" name="name" placeholder="Envelope name">
+            <input type="number" name="amount" min="0.00" step="0.01"placeholder="Starting amount">
+            <div>
+              <input type="submit" name="submit" class="custom-button" value="Create">
+              <input type="submit" name="submit" class="custom-button" value="Cancel">
+            </div>
+          </form>
+          <img src="/assets/img/icons/envelope.png" alt="Envelope Icon">
+        </div>
+        <div class="envelope-edit hidden">
+          <div class="controls">
+            <div class="subtract fake-button">&mdash;</div>
+            <div class="envelope-name">
+              <div class="name">ENVELOPE NAME</div>
+              <div class="amount">200</div>
+            </div>
+            <div class="add fake-button">+</div>
+          </div>
+
+          <div class="transactions">
+            <!--div class="spinner"></div-->
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+            <div class="transaction">
+              <span class="description">Description</span>
+              <span class="amount">120</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script>
+      const envelopeEdit = document.querySelector('.envelope-edit');
+      const envelopeView = document.querySelector('.envelope-view');
+      const createEnvelopeForm = envelopeView.querySelector('form');
+      const envelopeIcon = envelopeView.querySelector('img');
+      const envelopeWrapper = envelopeView.querySelector('.wrapper');
+
+      createEnvelopeForm.addEventListener('submit', e => {
+        // TODO: Create new envelope with values from form
+        e.preventDefault();
+        console.log(e);
+      });
+
+      envelopeEdit.querySelector('.controls .envelope-name').addEventListener('click', e => {
+        envelopeEdit.classList.add('hidden');
+        envelopeView.classList.remove('hidden');
+      });
+
+      envelopeIcon.addEventListener('click', e => {
+        createEnvelopeForm.classList.toggle('hidden');
+      });
+
+      document.querySelectorAll('.envelope').forEach(envelope => {
+        envelope.addEventListener('click', e => {
+          const envName = envelope.querySelector('label').textContent;
+          const envAmount = envelope.querySelector('.amount').textContent;
+
+          envelopeEdit.querySelector('.envelope-name .name').textContent = envName;
+          envelopeEdit.querySelector('.envelope-name .amount').textContent = envAmount;
+
+          envelopeView.classList.add('hidden');
+          envelopeEdit.classList.remove('hidden');
+        });
+      });
+    </script>
+  </body>
+</html>
