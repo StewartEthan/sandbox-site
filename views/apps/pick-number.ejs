@@ -13,6 +13,7 @@
       }
       .add-option {
         border: 1px solid #D0D0D0;
+        color: #111;
         border-radius: 5px;
         cursor: pointer;
         display: inline-block;
@@ -26,6 +27,15 @@
 
       .custom-button {
         font-size: 1.25em;
+        width: 40%;
+      }
+
+      .decision input[type="number"] {
+        border: 1px solid #D0D0D0;
+        border-radius: 5px;
+        font-size: 1em;
+        margin: 5px auto;
+        padding: 5px;
         width: 40%;
       }
 
@@ -57,6 +67,7 @@
       }
 
       .range-error {
+        cursor: pointer;
         margin: 5px auto;
         text-align: left;
         width: 40%;
@@ -83,6 +94,10 @@
             &nbsp;to&nbsp;
             <input type="number" id="max" value="100" placeholder="Max">
           </div>
+          <div class="decision">
+            <input type="checkbox" checked>&nbsp;<label>Choose your own number</label>
+            <input type="number" class="force-block">
+          </div>
           <div class="custom-button pick-number-btn">Pick a Number</div>
         </div>
       </main>
@@ -91,11 +106,16 @@
     <script>
       // Globals
       const addOptionButton = document.querySelector('.add-option');
+      const decisionCheck = document.querySelector('.decision input[type="checkbox"]');
+      const decisionInput = document.querySelector('.decision input[type="number"]');
       const optionsInputs = document.querySelector('.options');
       const pickNumberBtn = document.querySelector('.pick-number-btn');
       const rangeError = document.querySelector('.range-error');
+      const rangeInputs = document.querySelectorAll('.range input');
 
+      var options = [];
       var numOptions = 2;
+      var rangeCapacity = 2;
 
       // Event listeners
       addOptionButton.addEventListener('click', e => {
@@ -103,27 +123,86 @@
         option.classList.add('force-block');
         option.placeholder = `Option ${++numOptions}`;
         optionsInputs.appendChild(option);
+        rangeCapacity++;
       });
+      decisionCheck.addEventListener('change', e => {
+        decisionInput.disabled = !decisionCheck.checked;
+      })
       pickNumberBtn.addEventListener('click', e => {
-        let options = [],
-            min = parseFloat(document.querySelector('#min').value),
-            max = parseFloat(document.querySelector('#max').value);
+        options = [];
+        let minElem = document.querySelector('#min'),
+            maxElem = document.querySelector('#max'),
+            min = parseInt(minElem.value),
+            max = parseInt(maxElem.value);
         document.querySelectorAll('.options input').forEach(option => {
-          if (options.value) {
-            options.push(option.value);
+          if (option.value) {
+            options.push({value: option.value});
           }
         });
         if ((max - min + 1) < options.length) {
-          throw new Error("You have too many options for the range provided. Get rid of some of the options or provide a larger range")
+          showError("Too many options for the range provided.", minElem);
+          return;
+        } else {
+          // Assign each option a random value within the range
+          options.forEach(option => {
+            option.number = random(min, max);
+          });
+
+          // Choose a random number and find the option closest to it
+          const decision = parseInt(decisionInput.value);
+          let closest;
+          options.forEach(option => {
+            let diff = Math.abs(decision - option.number);
+            if (closest) {
+              if (closest - diff === 0) {
+                showError("Two or more options were equally close", minElem);
+                return;
+              } else {
+                closest = (closest - diff) > 0
+                  ? closest
+                  : option.value;
+              }
+            } else {
+              closest = option.value;
+            }
+          });
+          console.log(closest);
         }
       });
-      document.querySelectorAll('.range input').forEach(input => {
-        input.addEventListener('change', e => {
-
+      rangeError.addEventListener('click', e => {
+        rangeError.classList.add('hidden');
+        rangeInputs.forEach((input, index) => {
+          input.disabled = false;
         });
+        rangeInputs[0].focus();
+        rangeInputs[0].select();
+      });
+      document.querySelectorAll('.range input').forEach(input => {
+        input.addEventListener('change', checkRange);
+        input.addEventListener('keyup', checkRange);
       });
 
       // Functions
+      function checkRange(e) {
+        const min = parseInt(document.querySelector('#min').value);
+        const max = parseInt(document.querySelector('#max').value);
+        if (max <= min) {
+          showError("Max must be smaller than min.", e.target)
+        }
+      }
+
+      function showError(message, input) {
+        rangeError.innerHTML = `${message} Click to close`;
+        rangeError.classList.remove('hidden');
+        document.querySelectorAll('.range input').forEach(input => {
+          input.disabled = true;
+        })
+        if (input) {
+          input.value = input.id === "min"
+            ? parseInt(max.value) - rangeCapacity - 1
+            : parseInt(min.value) + rangeCapacity - 1;
+        }
+      }
     </script>
   </body>
 </html>
