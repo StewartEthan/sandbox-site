@@ -1,6 +1,7 @@
 {
   "name": "sandbox",
   "version": "1.0.0",
+  "private": true,
   "description": "A site for me to upload projects as a portfolio and experiment with various web dev frameworks and libraries",
   "main": "app.js",
   "dependencies": {
@@ -9,7 +10,7 @@
     "stylus": "^0.49.1"
   },
   "engines": {
-    "node": "6.7.x"
+    "node": "6.9.x"
   },
   "scripts": {
     "build-css": "stylus assets/css/*.styl -o assets/css/compiled",
