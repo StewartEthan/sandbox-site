@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%
+      var page = page || {};
+      page.title = "CIT 261";
+
+      var topics = [
+        { topic: 'Loops, Conditional Statements, Functions, Variables, Parameters, Arrays, Associative Arrays', href: 'basics', ready: false },
+        { topic: 'Object Creation Functions, Inheritance, Properties, Methods, Instantiation', href: 'objects', ready: false },
+        { topic: 'JSON Parse, Stringify', href: 'json', ready: false },
+        { topic: 'Using XMLHTTPRequest to Consume a JSON Web Service', href: 'xhr', ready: false },
+        { topic: 'Local Storage API, Storing and Retrieving Simple Data, Arrays, Associative Arrays, and Objects', href: 'localstorage', ready: false },
+        { topic: 'DOM Manipulation Using createElement, appendChild, insertBefore, removeChild, etc.', href: 'dom-manipulation', ready: false },
+        { topic: 'Manipulating CSS Class Properties Using JavaScript', href: 'css-manipulation', ready: false },
+        { topic: 'Creating CSS3 Transitions and Animations in CSS and triggering them with JavaScript', href: 'css-js-triggering', ready: false },
+        { topic: 'Standard JavaScript Events Including those for Mobile Devices ( Ex. onTouchBegin, onLoad, etc.) and Animation and Transition Events', href: 'js-events', ready: false },
+        { topic: 'HTML5 Tags - Video, Audio, and Canvas', href: 'html5', ready: false },
+        { topic: 'Designing, Defining, and Triggering CSS3 Transitions without Custom Libraries (Thought Library)', href: 'css-transitions', ready: false },
+        { topic: 'Designing, Defining, and Triggering CSS3 Transforms without Custom Libraries (Thought Library)', href: 'css-transforms', ready: false },
+        { topic: 'Designing, Defining, and Triggering CSS3 Animations without Custom Libraries (Thought Library)', href: 'css-animations', ready: false }
+      ];
+    %>
+    <% include ../partials/head-tags %>
+    <style>
+      .noclick {
+        color: gray;
+        text-decoration: line-through;
+      }
+
+      .soon {
+        background: #002265;
+        border-radius: 5px;
+        color: white;
+        padding: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <% include ../partials/header %>
+      <main>
+        <div>
+          <h1>Cit 261 Topics</h1>
+          <p>
+            Below is a list of links for topics in CIT 261. Click on any blue link to go
+            to the page demonstrating that topic. The links with strikethrough mean they
+            aren't ready yet, and clicking on them will only produce sadness and tears.
+          </p>
+          <ul>
+            <% for (var i = 0, topic; i < topics.length; i++) { %>
+              <% topic = topics[i]; %>
+              <li>
+                <a href="cit261/<%- topic.href %>" <%- topic.ready ? '' : 'class="noclick"' %> >
+                  <%- topic.topic %>
+                </a>
+              </li>
+            <% } %>
+          </ul>
+        </div>
+      </main>
+      <% include ../partials/footer %>
+    </div>
+
+    <script>
+      const noclicks = document.querySelectorAll('.noclick');
+      noclicks.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+
+          const soon = document.createElement('span');
+          soon.classList.add('soon');
+          soon.innerHTML = 'Coming&nbsp;soon!';
+          link.parentElement.appendChild(soon);
+
+          setTimeout(() => link.parentElement.removeChild(soon), 4000);
+        });
+      });
+    </script>
+  </body>
+</html>
