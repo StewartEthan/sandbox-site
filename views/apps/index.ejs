@@ -46,14 +46,15 @@
     <script type="text/javascript">
       Array.from(document.querySelectorAll('.more-link')).forEach(function(elem) {
         elem.addEventListener('click', function() {
-          var anchor = this.querySelector('span.fake-link');
-          var span = this.querySelectorAll('span')[1];
-          if (anchor.innerHTML === 'More...') {
-            anchor.innerHTML = 'Hide';
-            removeClass(span, 'hidden');
+          debugger;
+          var anchor = elem.querySelector('span.fake-link');
+          var span = elem.querySelectorAll('span')[1];
+          if (anchor.textContent === 'More...') {
+            anchor.textContent = 'Hide';
+            span.classList.remove('hidden');
           } else {
-            anchor.innerHTML = 'More...';
-            addClass(span, 'hidden');
+            anchor.textContent = 'More...';
+            span.classList.add('hidden');
           }
         })
       })
