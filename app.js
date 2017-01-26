@@ -46,7 +46,17 @@ app.get('/cit261', (req,res) => {
   res.render('cit261/index');
 });
 app.get('/cit261/:topic', (req,res) => {
-  res.render(`cit261/${req.params.topic}`);
+  try {
+    res.render(`cit261/${req.params.topic}`);
+  } catch (err) {
+    console.error(`An error occured while trying to render cit261/${req.params.topic}:`, err);
+    res.render('404');
+  }
+});
+
+// 404 handling - keep as last route
+app.use((req,res) => {
+  res.status(404).render('404');
 });
 
 // Start listening
