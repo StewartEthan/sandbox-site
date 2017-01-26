@@ -17,7 +17,8 @@
     "watch-css": "stylus assets/css/*.styl -o assets/css/compiled -w",
     "clean": "rm -rf assets/css/compiled && mkdir -p assets/css/compiled",
     "build": "npm run clean && npm run build-css",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "gulp stylus"
   },
   "author": "Ethan Stewart",
   "license": "ISC",
