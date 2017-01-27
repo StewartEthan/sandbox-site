@@ -26,7 +26,7 @@ app.get('/apps', (req,res) => {
   res.render('apps');
 });
 app.get('/apps/:appName', (req,res) => {
-  res.render(`apps/'${req.params.appName}`);
+  res.render(`apps/${req.params.appName}`);
 });
 // /code routes
 app.get('/code', (req,res) => {
