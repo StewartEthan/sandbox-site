@@ -7,6 +7,92 @@
     %>
     <% include ../partials/head-tags %>
     <style>
+      button:disabled {
+        background: #D0D0D0;
+        color: black;
+        cursor: not-allowed;
+        text-decoration: line-through;
+        text-shadow: none;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h2, code {
+        font-family: firacode, mono;
+      }
+
+      code {
+        font-size: 1.05em;
+        letter-spacing: 1px;
+      }
+
+      li code:first-child::after {
+        content: ": ";
+      }
+
+      .button-wrapper button {
+        flex-grow: 1;
+      }
+
+      .button-wrapper, .controls {
+        display: flex;
+        justify-content: space-between;
+      }
+      .colored-div {
+        background: red;
+        color: white;
+        cursor: default;
+        margin: 10px 0;
+        padding: 5px;
+        text-align: center;
+      }
+
+      .controls button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin: 0;
+      }
+
+      .controls input {
+        border: 1px solid #002265;
+        border-radius: 5px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        flex-grow: 1;
+        font-family: verdana, sans-serif;
+        font-size: 1em;
+        padding: 5px;
+      }
+
+      .custom-button {
+        margin: 0 0 20px;
+      }
+
+      .custom-button.hide-btn {
+        font-size: 0.95em;
+        margin: 0;
+        padding: 3px 10px;
+      }
+
+      .custom-button.reset {
+        font-size: 0.75em;
+        margin: 0;
+      }
+
+      .method {
+        border: 1px solid rgba(0,0,0,0.5);
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+        margin: 40px auto;
+        max-width: 500px;
+        padding: 0 20px 20px;
+      }
+
+      .optional {
+        font-style: italic;
+      }
     </style>
   </head>
 
@@ -16,12 +102,271 @@
       <main>
         <div>
           <h1>Cit 261: DOM Manipulation</h1>
+          <div class="method create-element">
+            <h2>createElement <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                <code>createElement</code> is the method to use to 
+                create a new <code>HTML</code> node.
+                The object returned can be inserted into the DOM 
+                with <code>appendChild</code> (see below)
+              <h3>Parameters</h3>
+                <ul>
+                  <li>
+                    <code>tagName</code>the type of element to be created
+                  </li>
+                  <li>
+                    <code class="optional">options</code>used for specifying custom elements
+                  </li>
+                </ul>
+              <h3>Example Usage</h3>
+                <code class="example">const child = document.createElement('div');</code>
+              <h3>Demo <button class="custom-button reset">Reset</button></h3>
+                <p>
+                  Click either button to create a new element. It is inserted into a parent
+                  div below using the <code>appendChild</code> method (see next section)
+                </p>
+                <div class="button-wrapper">
+                  <button class="custom-button create-div" style="margin-right:1px;">Create new <code>&lt;div&gt;</code></button>
+                  <button class="custom-button create-h1" style="margin-left:1px;">Create new <code>&lt;h1&gt;</code></button>
+                </div>
+                <div class="parent"></div>
+            </section>
+          </div>
+
+          <div class="method append-child">
+            <h2>appendChild <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                <code>appendChild</code> is the method to use to 
+                insert an element into a parent node. You call it
+                as a method on an HTML node object, which can be
+                one created with <code>createElement</code> or selected
+                with <code>querySelector</code> or <code>querySelectorAll</code>.
+                If you pass a node as the argument that is already a
+                child of another element, it will be removed from its
+                first parent before appended to the new parent.
+              <h3>Parameters</h3>
+                <ul>
+                  <li>
+                    <code>child</code>the element to be appended
+                  </li>
+                </ul>
+              <h3>Example Usage</h3>
+                <code class="example">parent.appendChild(child);</code>
+              <h3>Demo</h3>
+              <em>See createElement example above</em>
+            </section>
+          </div>
+
+          <div class="method insert-before">
+            <h2>insertBefore <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                <code>insertBefore</code> is the method to use to 
+                insert an HTML node as a child of a parent node, but
+                it allows you to choose which child of that parent to
+                insert it before. It is called as a method on the
+                parent node. You must either pass a valid reference
+                to a child node, or <code>null</code>, as the second
+                parameter. Uses of HTML node properties, such as <code>firstChild</code>
+                and <code>nextSibling</code> can help with dynamic placement, as they
+                always either contain a valid reference or a <code>null</code> value.
+                If the reference is null, the new node is inserted at the end of
+                the parent node.
+              <h3>Parameters</h3>
+                <ul>
+                  <li>
+                    <code>newNode</code>the element to be inserted
+                  </li>
+                  <li>
+                    <code>referenceNode</code>the node to insert <code>newNode</code> directly before
+                  </li>
+                </ul>
+              <h3>Example Usage</h3>
+                <code class="example">parent.insertBefore(child, parent.children[0]);</code>
+              <h3>Demo <button class="custom-button reset">Reset</button></h3>
+              <p>
+                Type some text in the input field and click the button
+                to insert your text at the beginning of the parent element below.
+              </p>
+              <div class="controls">
+                <input type="text" placeholder="Type text to be inserted...">
+                <button class="custom-button">Insert</button>
+              </div>
+              <div class="parent">
+                <div class="colored-div">Original first element</div>
+              </div>
+          </div>
+
+          <div class="method remove-child">
+            <h2>removeChild <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                <code>removeChild</code> is the method to use to 
+                remove a child element from its parent node. It returns
+                the child being removed to be used if you need it. This
+                is another good place to use such properties as <code>firstChild</code>
+                and <code>nextSibling</code>. It is worth noting, however, that 
+                <code>firstChild</code> may return a text node rather than 
+                an element node, and if this is the case, it will appear 
+                as if nothing was removed. To get around this, use 
+                <code>firstElementChild</code> instead of <code>firstChild</code>,
+                <code>lastElementChild</code> instead of <code>lastChild</code>,
+                and <code>nextElementSibling</code> instead of <code>nextSibling</code>.
+                You can also use <code>parent.children[<em>index</em>]</code> to
+                reference a child, just be sure to provide a valid index.
+                If the child element you pass in as the argument is not
+                actually a child of the parent, an exception is thrown,
+                so if there is a possibility of a node being provided that
+                isn't guaranteed to be a child of the parent, handle the
+                exception accordingly.
+              <h3>Parameters</h3>
+                <ul>
+                  <li>
+                    <code>child</code>the element to be removed
+                  </li>
+                </ul>
+              <h3>Example Usage</h3>
+                <code class="example">parent.removeChild(child);</code>
+              <h3>Demo <button class="custom-button reset">Reset</button></h3>
+              <p>
+                Click either button to remove a child from the group of children below. If
+                you click either button after all the children are removed, my exception
+                handling brings up an alert and disables the buttons.
+              </p>
+              <div class="button-wrapper">
+                <button class="custom-button remove-first" style="margin-right:1px;">Remove First Child</button>
+                <button class="custom-button remove-last" style="margin-left:1px;">Remove Last Child</button>
+              </div>
+              <div class="parent">
+                <% for (var i = 0; i < 10; i++) { %>
+                  <div class="colored-div">Child #<%- i + 1 %></div>
+                <% } %>
+              </div>
+            </section>
+          </div>
         </div>
       </main>
       <% include ../partials/footer %>
     </div>
 
     <script>
+    // createElement and appendChild
+      const createDiv       = document.querySelector('.create-element .create-div');
+      const createH1        = document.querySelector('.create-element .create-h1');
+      const createParent    = document.querySelector('.create-element .parent');
+
+      createDiv.addEventListener('click', e => {
+        // Create the element
+        const div = document.createElement('div');
+        
+        // Add some stuff to make it visible
+        div.classList.add('colored-div');
+        div.textContent = 'You created a div';
+
+        // Append it to the parent
+        createParent.appendChild(div);
+      });
+
+      createH1.addEventListener('click', e => {
+        // Create the element
+        const h1 = document.createElement('h1');
+        
+        // Add some text
+        h1.textContent = 'You created an h1';
+
+        // Append it to parent
+        createParent.appendChild(h1);
+      });
+
+      document.querySelector('.create-element .reset').addEventListener('click', e => {
+        createParent.innerHTML = "";
+      });
+
+    // insertBefore
+      const input         = document.querySelector('.insert-before .controls input');
+      const insert        = document.querySelector('.insert-before .controls button');
+      const insertParent  = document.querySelector('.insert-before .parent');
+      const children      = insertParent.children;
+      const originalChild = children[0];
+
+      insert.addEventListener('click', e => {
+        // Create a div and get the input text
+        const div = document.createElement('div');        
+        const text = input.value;
+
+        // Put the div together
+        div.classList.add('colored-div');
+        div.style.background = 'forestgreen';
+        div.textContent = text;
+
+        // Insert the div at the beginning of the parent
+        insertParent.insertBefore(div, children[0]);
+      });
+
+      document.querySelector('.insert-before .reset').addEventListener('click', e => {
+        insertParent.innerHTML = "";
+        insertParent.appendChild(originalChild);
+        input.value = "";
+      });
+
+    // removeChild
+      const removeFirst  = document.querySelector('.remove-child .remove-first');
+      const removeLast   = document.querySelector('.remove-child .remove-last');
+      const removeParent = document.querySelector('.remove-child .parent');
+
+      removeFirst.addEventListener('click', e => {
+        try {
+          removeParent.removeChild(removeParent.firstElementChild);
+        } catch (err) {
+          alert('No child left to remove!');
+          removeFirst.disabled = true;
+          removeLast.disabled = true;
+        }
+      });
+
+      removeLast.addEventListener('click', e => {
+        try {
+          removeParent.removeChild(removeParent.lastElementChild);
+        } catch (err) {
+          alert('No child left to remove!');
+          removeFirst.disabled = true;
+          removeLast.disabled = true;
+        }
+      });
+
+      document.querySelector('.remove-child .reset').addEventListener('click', e => {
+        removeParent.innerHTML = "";
+        
+        for (let i = 0; i < 10; i++) {
+          const child = document.createElement('div');
+          child.classList.add('colored-div');
+          child.textContent = `Child #${i+1}`;
+          removeParent.appendChild(child);
+        }
+
+        removeFirst.disabled = false;
+        removeLast.disabled = false;
+      });
+    
+    // Hide buttons
+      document.querySelectorAll('.hide-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const content = btn.parentElement.nextElementSibling;
+          content.classList.toggle('hidden');
+          btn.textContent = btn.textContent === 'Hide' ? 'Show' : 'Hide';
+        });
+      });
+    
+    // Hide all content if URL says to
+      const hideAll = window.location.search.match(/hideall=(true|false)/i);
+      if (hideAll[1] === "true") {
+        document.querySelectorAll('.method .content').forEach(sec => {
+          sec.classList.add('hidden');
+          sec.parentElement.querySelector('.hide-btn').textContent = 'Show';        
+        });
+      }
     </script>
   </body>
 </html>
