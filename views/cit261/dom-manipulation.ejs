@@ -303,7 +303,7 @@
         div.textContent = text;
 
         // Insert the div at the beginning of the parent
-        insertParent.insertBefore(div, children[0]);
+        insertParent.insertBefore(div, insertParent.firstChild);
       });
 
       document.querySelector('.insert-before .reset').addEventListener('click', e => {
