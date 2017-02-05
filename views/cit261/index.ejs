@@ -6,7 +6,7 @@
       page.title = "CIT 261";
 
       var topics = [
-        { topic: 'Loops, Conditional Statements, Functions, Variables, Parameters, Arrays, Associative Arrays',                                         href: 'basics',            ready: false },
+        { topic: 'Loops, Conditional Statements, Functions, Variables, Parameters, Arrays, Associative Arrays',                                         href: 'basics',            ready: true  },
         { topic: 'Object Creation Functions, Inheritance, Properties, Methods, Instantiation',                                                          href: 'objects',           ready: false },
         { topic: 'JSON Parse, Stringify',                                                                                                               href: 'json',              ready: false },
         { topic: 'Using XMLHTTPRequest to Consume a JSON Web Service',                                                                                  href: 'xhr',               ready: false },
@@ -52,7 +52,7 @@
             <% for (var i = 0, topic; i < topics.length; i++) { %>
               <% topic = topics[i]; %>
               <li>
-                <a href="cit261/<%- topic.href %>" <%- topic.ready ? '' : 'class="noclick"' %> >
+                <a href="/cit261/<%- topic.href %>" <%- topic.ready ? '' : 'class="noclick"' %> >
                   <%- topic.topic %>
                 </a>
               </li>
