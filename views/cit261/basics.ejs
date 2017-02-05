@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%
+      var page = page || {};
+      page.title = "CIT 261: JavaScript Basics";
+    %>
+    <% include ../partials/head-tags %>
+    <style>
+      button:disabled {
+        background: #D0D0D0;
+        color: black;
+        cursor: not-allowed;
+        text-decoration: line-through;
+        text-shadow: none;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h2, code {
+        font-family: firacode, mono;
+      }
+
+      code, pre {
+        font-size: 1.05em;
+        letter-spacing: 1px;
+      }
+
+      li code:first-child::after {
+        content: ": ";
+      }
+
+      .button-wrapper button {
+        flex-grow: 1;
+      }
+
+      .button-wrapper, .controls {
+        display: flex;
+        justify-content: space-between;
+      }
+      .colored-div {
+        background: red;
+        color: white;
+        cursor: default;
+        margin: 10px 0;
+        padding: 5px;
+        text-align: center;
+      }
+
+      .controls button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin: 0;
+        padding: 7px 15px;
+      }
+
+      .controls input {
+        border: 1px solid #002265;
+        border-radius: 5px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        flex-grow: 1;
+        font-family: verdana, sans-serif;
+        font-size: 1em;
+        padding: 5px;
+      }
+
+      .custom-button {
+        margin: 0 0 20px;
+      }
+
+      .custom-button.hide-btn {
+        font-size: 0.95em;
+        margin: 0;
+        padding: 3px 10px;
+      }
+
+      .custom-button.reset {
+        font-size: 0.75em;
+        margin: 0;
+      }
+
+      .method {
+        border: 1px solid rgba(0,0,0,0.5);
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+        margin: 40px auto;
+        max-width: 500px;
+        padding: 0 20px 20px;
+      }
+
+      .optional {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <% include ../partials/header %>
+      <main>
+        <div>
+        <!--
+        Variables
+        Conditionals
+        Loops
+        Functions/Parameters
+        Arrays
+        Associative Arrays
+        -->
+          <h1>Cit 261: JavaScript Basics</h1>
+          <div class="method variables">
+            <h2>Variables <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                As in pretty much every other programming language that I know of,
+                variables in JavaScript are, in a nutshell, containers to hold data.
+                They can contain any of JavaScript's primitive types, or an instance
+                of any Object, or a user-defined collection.
+
+                <h4>Declare and Assign</h4>
+                  <p>
+                    You declare a variable with the keyword <code>var</code>. This
+                    reserved keyword tells the computer to set aside a space in memory
+                    to contain whatever value the variable is assigned. You assign it
+                    a value by using the assignment operator, which is a single
+                    equal sign <code>=</code>.
+                  </p>
+                  <p>
+                    <strong>NOTE:</strong> While <code>var</code> is still the only
+                    variable declaration keyword supported across every browser, there
+                    are two more that were introduced in ES6 (the 2015 version of JavaScript)
+                    that allow for a little bit more control. <code>const</code> will create
+                    a variable that cannot be reassigned and must be initialized on the
+                    same line that it is declared on. <code>let</code> allows for reassignment,
+                    but not redeclaration (i.e. <code>var i = 0; var i = true;</code> is valid,
+                    but <code>let i = 0; let i = true;</code> is not allowed).
+                  </p>
+                <h4>Usage and Scope</h4>
+                  <p>
+                    You use a variable by referencing its name anywhere you would want
+                    its value to appear. However, you have to be sure that any variable
+                    you want to use is within the scope of where you intend to use it.
+                    Scope just refers to where the variable exists for use. When you declare
+                    a variable inside a function, it only exists inside that function and
+                    is not available for use outside of that function. If you declare a
+                    variable outside of any functions, it is considered a global variable
+                    and may be used anywhere.
+                  </p>
+                  <p>
+                    <strong>NOTE:</strong> The scope of variables declared by <code>const</code>
+                    and <code>let</code> is even tighter than the scope of those declared by
+                    <code>var</code>. While all three keywords may be used to create a global,
+                    if <code>const</code> or <code>let</code> is used within a code block
+                    (which is defined by a set of curly braces <code>{}</code>), it only exists
+                    inside that code block, whereas a variable declared with <code>var</code>
+                    will be accessible from any point after its declaration in a function,
+                    even outside of the code block it was declared in.
+                  </p>
+              <h3>Examples</h3>
+                <h4>Declare and Assign</h4>
+                  <code>
+                    var i;<br>
+                    i = 0;<br>
+                    var name = "Ethan";
+                  </code>
+                <h4>Usage and Scope</h4>
+                  <code>
+                    var x = 42; // Global scope<br>
+                    function fn() {<br>
+                    &nbsp;&nbsp;var y = 100; // Function scope<br>
+                    &nbsp;&nbsp;console.log(x); // Will display 42<br>
+                    &nbsp;&nbsp;console.log(y); // Will display 100<br>
+                    }<br>
+                    console.log(x); // Will display 42<br>
+                    console.log(y); // Will throw an error because y was declared in a function scope<br>
+                  </code>
+            </section>
+          </div>
+
+          <div class="method conditional">
+            <h2>Conditionals <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                Conditionals allow the computer to &ldquo;make decisions&rdquo; based on a given
+                condition or set of conditions. In JavaScript, conditions don't have to return
+                Boolean values only, but can evaluate other values as truthy or falsey.
+
+                <h4>Basic Usage</h4>
+                  <p>
+                    JavaScript has two main types of conditionals: if statements and switch
+                    statements. If statements allow for a condition to be evaluated as true
+                    or truthy, and will execute or not execute specific blocks of code based
+                    on that value. The <code>if</code> keyword can be paired with the
+                    <code>else</code> keyword to ensure the computer always executes some code
+                    regardless of the value of the condition. These may be chained to allow
+                    for multiple comparisons using <code>if/else if/else</code> statements (see
+                    example below). Switch statements can be a little easier to read, and are
+                    mostly used to determine what to do if a given variable is equal to a
+                    specific value in a set of values.
+                  </p>
+                  <p>
+                    Comparisons are at the heart of conditions. Like most other languages,
+                    JavaScript allows you to compare whether two values are equal, not equal,
+                    or if one value is less than or greater than another. These comparisons
+                    all produce Boolean values (<code>true</code> or <code>false</code>).
+                    As briefly mentioned above, comparisons in JavaScript don't have to strictly
+                    be Boolean comparisons. If the value in a condition evaluates to false, 0,
+                    &lsquo;&rsquo; (empty string), <code>null</code>, or <code>undefined</code>,
+                    then the condition is considered falsey. Any other value, such a valid
+                    string, a non-zero number, or a defined object or array, is considered truthy,
+                    and the condition essentially evaluates to true. 
+                  </p>
+              <h3>Examples</h3>
+                <h4>Basic Usage</h4>
+                  <code>
+                    if (x > 10) {<br>
+                    &nbsp;&nbsp;console.log('Greater than 10');<br>
+                    } else if (x < 0) {<br>
+                    &nbsp;&nbsp;console.log('Less than 0');<br>
+                    } else {<br>
+                    &nbsp;&nbsp;console.log('In range of 0 to 10 inclusive');<br>
+                    }<br>
+                  </code><br>
+                  <code>
+                    switch (choice) {<br>
+                    &nbsp;&nbsp;case 'New entry':<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;createEntry();<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+                    &nbsp;&nbsp;case 'Edit entry':<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;editEntry();<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+                    &nbsp;&nbsp;case 'Delete entry':<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;deleteEntry();<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+                    &nbsp;&nbsp;default:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;console.error('Unknown choice');<br>
+                    }
+                  </code>
+            </section>
+          </div>
+
+          <div class="method loops">
+            <h2>Loops <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                Loops are a way to easily repeat code multiple times. The two most
+                frequently used types (in my experience) are <code>for</code> loops
+                and <code>while</code> loops.
+
+                <h4>For Loops</h4>
+                  <p>
+                    <code>for</code> loops have three sections: initialize, compare,
+                    and update. The basic structure is like this:<br>
+                    <code>for (<em>initialize</em>;&nbsp;<em>compare</em>;&nbsp;<em>update</em>)</code><br>
+                    The initialize section happens once, when the loop is first run. The compare
+                    section happens through each iteration of the loop, and will run the code
+                    inside the loop if it is true or truthy, or go to whatever follows the loop
+                    if it is false or falsey. Any of the three sections may be left out if not
+                    necessary for a specific usage.
+                  </p>
+                  <p>
+                    <code>while</code> loops just have a comparison and look like this:<br>
+                    <code>while (<em>comparison</em>)</code><br>
+                    Because there is only a comparison, the programmer must decide how to handle
+                    updating the values being compared, or use a conditional <code>break</code>
+                    statement inside the code (the <code>break</code> keyword stops execution of 
+                    the loop that is in). If the value is never updated and the loop is never
+                    broken, it will be an infinite loop, which in JavaScript will usually freeze
+                    or crash your browser.
+                  </p>
+              <h3>Examples</h3>
+                <h4>For Loops</h4>
+                  <code>
+                    for (let i = 0; i < 10; ++i) {<br>
+                    &nbsp;&nbsp;console.log(i);<br>
+                    }<br>
+                  </code>
+                <h4>While Loops</h4>
+                  <code>
+                    let child;<br>
+                    while (container.firstElementChild) {<br>
+                    &nbsp;&nbsp;child = container.firstElementChild;
+                    &nbsp;&nbsp;container.removeChild(child);<br>
+                    }
+                  </code>
+            </section>
+          </div>
+
+          <div class="method functions">
+            <h2>Functions <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                Functions are a convenient way of grouping together code statements
+                for reusability in multiple places. They can take parameters, or
+                values provided when the function is called, to allow for even more
+                flexibility in usage.
+
+                <h4>Creating Functions</h4>
+                  <p>
+                    The simplest and most common way to create a function in JavaScript
+                    is by using the <code>function</code> keyword. The declaration of a
+                    function with this method looks like this:<br>
+                    <code>function fnName(){}</code><br>
+                    Inside the curly braces, which are required, you can put whatever
+                    code you want to be executed when the function is called. If you plan
+                    to provide the caller with a value representing the final results,
+                    the <code>return</code> keyword will send back whatever value you
+                    tell it to to the point where the function was called.
+                  </p>
+                <h4>Parameters</h4>
+                  <p>
+                    Oftentimes, when you call a function you want to use it to
+                    manipulate some data, or make a decision based on the data.
+                    To allow for this, functions can be given parameters. Declaring
+                    a function with parameters looks like this:<br>
+                    <code>function fnWithParams(title, year){}</code><br>
+                    This function allows a user to pass in up to two <em>arguments</em>,
+                    or values to be assigned to the parameters when the function is run.
+                    If the user leaves out one or both of those parameters when calling
+                    the function, then the ones not specifically given a value will
+                    be <code>undefined</code>. This can cause unexpected behavior,
+                    especially when the parameter is expecting an object or array, so
+                    be sure to address that as necessary.
+                  </p>
+                  <p>
+                    <strong>NOTE:</strong> In ES6, default parameters were introduced as
+                    a way to prevent parameters from being undefined. This feature has
+                    already been around in some compiled languages, but is not fully
+                    supported by all browsers yet (support is especially sparse on mobile),
+                    so if you don't use a compiler such as <a href="https://babeljs.io">Babel</a>,
+                    use it with caution if you plan on supporting browsers that don't
+                    allow default parameters.
+                  </p>
+              <h3>Examples</h3>
+                <h4>Creating Functions</h4>
+                  <code>
+                    function greet() {<br>
+                    &nbsp;&nbsp;console.log("Hello!");<br>
+                    }<br>
+                  </code>
+                <h4>Parameters</h4>
+                  <code>
+                    function double(num) {<br>
+                    &nbsp;&nbsp;return num * 2;<br>
+                    }<br>
+                  </code><br>
+                  <code>
+                    function customGreet(name = "friend") {<br>
+                    &nbsp;&nbsp;console.log("Hello, " + name);<br>
+                    }
+                  </code>
+            </section>
+          </div>
+
+          <div class="method arrays">
+            <h2>Arrays <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                Arrays are a way to group multiple variables together. Arrays themselves
+                are considered variables, but instead of having just a number or string
+                or whatever as a value, it has indexed elements that can each hold a
+                primitive value, an object, or even another array. The first index of
+                an array is always 0, rather than 1. There are a lot of
+                useful functions that can be called to enhance the usage of an array,
+                such as <code>indexOf(element)</code> (returns the index where the element
+                parameter is stored, or -1 if it isn't in the array). The <code>length</code>
+                attribute will tell you how many elements currently exist in the array. This
+                property is especially useful for finding the last index of an array, which
+                will always be <code>length &minus; 1</code>.
+              <h3>Examples</h3>
+                <h4>Creating an Array</h4>
+                  <code>
+                    // This syntax is not necessary and<br>
+                    // requires you to fill the array still<br>
+                    const arr = new Array(3);<br>
+                  </code><br>
+                  <code>
+                    // This syntax is usually recommended<br>
+                    const filledArr = [<br>
+                    &nbsp;&nbsp;"Anakin Skywalker",<br>
+                    &nbsp;&nbsp;"Obi-Wan Kenobi",<br>
+                    &nbsp;&nbsp;"Han Solo"<br>
+                    ];<br>
+                  </code>
+                <h4>Calling a Method on an Array</h4>
+                  <code>
+                    // Will return 2<br>
+                    filledArr.indexOf("Han Solo");<br>
+                  </code><br>
+                  <code>
+                    // Will print each element and its index<br>
+                    filledArr.forEach(function(element, idx) {<br>
+                    &nbsp;&nbsp;console.log(element, idx);<br>
+                    });
+                  </code>
+            </section>
+          </div>
+
+          <div class="method assoc-arrays">
+            <h2>Associative Arrays <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                An associative array is an array that uses strings instead of numbers
+                for its indexes. This can be more descriptive and helpful when looking
+                for a specific element in an array. Strictly speaking, JavaScript only
+                supports arrays with numeric indexes, but if you try to assign a value
+                to a named index on an array, it will redefine the array to a basic object.
+                <strong>IMPORTANT:</strong> if you do this, trying to use array methods
+                will NOT work, so make sure if you're using a string index, it's only on
+                an object.<br>
+                That said, standard JavaScript objects can be a useful equivalent of an
+                associative array, as you are accessing named properties instead of a
+                far less descriptive numeric index. If the property name would be an allowable
+                variable name (doesn't start with a number, doesn't contain any special characters
+                other than underscore or dollar sign), you can access it with &ldquo;dot
+                syntax&rdquo; (e.g. <code>person.name</code>). If it does contain a special
+                character, such as a dash, use the bracket syntax similar to an array 
+                (<code>person['first-name']</code>).
+              <h3>Examples</h3>
+                <code>
+                  // Assign multiple indexes of an object<br>
+                  const person = {<br>
+                  &nbsp;&nbsp;name: 'Obi-Wan Kenobi',<br>
+                  &nbsp;&nbsp;bday: '57 BBY',<br>
+                  }<br>
+                </code><br>
+                <code>
+                  // Access those indexes<br>
+                  Object.keys(person).forEach(function(key) {<br>
+                  &nbsp;&nbsp;console.log(person[key]);<br>
+                  });
+                </code>
+            </section>
+          </div>
+        </div>
+      </main>
+      <% include ../partials/footer %>
+    </div>
+
+    <script> 
+    // Hide buttons
+      document.querySelectorAll('.hide-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const content = btn.parentElement.nextElementSibling;
+          content.classList.toggle('hidden');
+          btn.textContent = btn.textContent === 'Hide' ? 'Show' : 'Hide';
+        });
+      });
+    
+    // Hide all content if URL says to
+      const hideAll = window.location.search.match(/hideall=(true|false)/i);
+      if (hideAll[1] === "true") {
+        document.querySelectorAll('.method .content').forEach(sec => {
+          sec.classList.add('hidden');
+          sec.parentElement.querySelector('.hide-btn').textContent = 'Show';        
+        });
+      }
+    </script>
+  </body>
+</html>
