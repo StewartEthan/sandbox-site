@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%
+      var page = page || {};
+      page.title = "CIT 261: JavaScript Events";
+    %>
+    <% include ../partials/head-tags %>
+    <style>
+      button:disabled {
+        background: #D0D0D0;
+        color: black;
+        cursor: not-allowed;
+        text-decoration: line-through;
+        text-shadow: none;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h2, code {
+        font-family: firacode, mono;
+      }
+
+      code {
+        font-size: 1.05em;
+        letter-spacing: 1px;
+      }
+
+      li code:first-child::after {
+        content: ": ";
+      }
+
+      .button-wrapper button {
+        flex-grow: 1;
+      }
+
+      .button-wrapper, .controls {
+        display: flex;
+        justify-content: space-between;
+      }
+      .colored-div {
+        background: red;
+        color: white;
+        cursor: default;
+        margin: 10px 0;
+        padding: 5px;
+        text-align: center;
+      }
+
+      .controls button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin: 0;
+        padding: 7px 15px;
+      }
+
+      .controls input {
+        border: 1px solid #002265;
+        border-radius: 5px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        flex-grow: 1;
+        font-family: verdana, sans-serif;
+        font-size: 1em;
+        padding: 5px;
+      }
+
+      .custom-button {
+        margin: 0 0 20px;
+      }
+
+      .custom-button.hide-btn {
+        font-size: 0.95em;
+        margin: 0;
+        padding: 3px 10px;
+      }
+
+      .custom-button.reset {
+        font-size: 0.75em;
+        margin: 0;
+      }
+
+      .method {
+        border: 1px solid rgba(0,0,0,0.5);
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+        margin: 40px auto;
+        max-width: 500px;
+        padding: 0 20px 20px;
+      }
+
+      .optional {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <% include ../partials/header %>
+      <main>
+        <div>
+          <h1>Cit 261: JavaScript Events</h1>
+          <div class="method load">
+            <h2>load event <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                the <code>load</code> event is fired when its target (usually called
+                on the <code>window</code> object) and its resources are done loading.
+              <h3>Examples</h3>
+                <code>
+                  window.addEventListener('load', evt => {<br>
+                  &nbsp;&nbsp;console.log('Window loaded');<br>
+                  });<br>
+                </code>
+              <h3>Demo</h3>
+                <span class="demo-output">not loaded</span>
+            </section>
+          </div>
+          
+          <div class="method touch">
+            <h2>touch events <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                There are three main useful events to listen for regarding
+                touchscreen usage: <code>touchstart</code>, <code>touchmove</code>,
+                and <code>touchend</code>.
+
+                <h4>touchstart</h4>
+                  <p>
+                    The <code>touchstart</code> event is fired when a finger is placed
+                    on its target DOM element.
+                  </p>
+
+                <h4>touchmove</h4>
+                  <p>
+                    The <code>touchmove</code> event fires when a finger is dragged within
+                    its target DOM element. Only fires after <code>touchstart</code> and
+                    before the corresponding <code>touchend</code> events.
+                  </p>
+
+                <h4>touchend</h4>
+                  <p>
+                    The <code>touchend</code> event fires when a finger stops touching its
+                    target DOM element.
+                  </p>
+              <h3>Examples</h3>
+                <code>
+                  el.addEventListener('touchstart', evt => {<br>
+                  &nbsp;&nbsp;console.log('touchstart fired');<br>
+                  });<br>
+                </code><br>
+
+                <code>
+                  el.addEventListener('touchmove', evt => {<br>
+                  &nbsp;&nbsp;console.log('touchmove fired');<br>
+                  });<br>
+                </code><br>
+
+                <code>
+                  el.addEventListener('touchend', evt => {<br>
+                  &nbsp;&nbsp;console.log('touchend fired');<br>
+                  });<br>
+                </code>
+              <h3>Demo</h3>
+                <!-- styles for the touch-demo div -->
+                <style>
+                  .touch-demo {
+                    border: 1px solid black;
+                    border-radius: 10px;
+                    height: 20vw;
+                    width: 20vw;
+
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                </style>
+                <div class="touch-demo">no touch</div>
+                <input type="checkbox" class="prevent-scroll" checked>&nbsp;Prevent scrolling
+            </section>
+          </div>
+
+          <div class="method animation">
+            <h2>animation events <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                There are three main events that can be used in conjunction with
+                CSS animation: <code>animationstart</code>, <code>animationiteration</code>,
+                and <code>animationend</code>. Each is explained in the examples section below.
+              <h3>Examples</h3>
+                <code>
+                  const events = [<br>
+                  &nbsp;&nbsp;'animationstart', // events[0]<br>
+                  &nbsp;&nbsp;'animationiteration', // events[1]<br>
+                  &nbsp;&nbsp;'animationend' // events[2]<br>
+                  ];<br>
+                </code><br>
+                <code>
+                  elem.addEventListener(events[0], evt => {<br>
+                  &nbsp;&nbsp;console.log('Fired when the animation starts for the first time');<br>
+                  });<br>
+                </code><br>
+
+                <code>
+                  elem.addEventListener(events[1], evt => {<br>
+                  &nbsp;&nbsp;console.log('Fired every time the animation starts, except the first time');<br>
+                  });<br>
+                </code><br>
+
+                <code>
+                  elem.addEventListener(events[2], evt => {<br>
+                  &nbsp;&nbsp;console.log('Fired when the animation ends');<br>
+                  });<br>
+                </code>
+              <h3>Demo</h3>
+                <!-- styles for the touch-demo div -->
+                <style>
+                  .anim-start::before {
+                    content: 'animationstart: ';
+                  }
+                  .anim-iter::before {
+                    content: 'animationiteration: ';
+                  }
+                  .anim-end::before {
+                    content: 'animationend: ';
+                  }
+                </style>
+                <button class="custom-button start-demo">Start Demo</button>
+                <button class="custom-button reset-demo">Reset</button>
+                <div class="animation-stats">
+                  <div class="anim-start">0</div>
+                  <div class="anim-iter">0</div>
+                  <div class="anim-end">0</div>
+                </div>
+                <div class="anim-demo"></div>
+            </section>
+          </div>
+
+          <div class="method other">
+            <h2>other useful events <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                There are a ton of events that can be listened for in JavaScript, and you
+                can even create your own and fire them for customized event handling. Below
+                are only a few of the more commonly used (in my experience) built-in events.
+
+                <h4>click</h4>
+                  <p>
+                    Fired when an element is clicked on. Very frequently
+                    attached to buttons and anchor tags, but can be attached to
+                    pretty much any element.
+                  </p>
+                
+                <h4>keyup</h4>
+                  <p>
+                    Fired when the target element detects a key press changing to the
+                    up, or unpressed, state. Often used for dynamic search results,
+                    typeaheads, and other similar form-related actions.
+                  </p>
+
+                <h4>beforeunload</h4>
+                  <p>
+                    Fired when the page has been told to unload (close), but before
+                    it has started to close. Often used to make sure something is saved
+                    before it loses any unsaved changes when the page closes.
+                  </p>
+                
+                <h4>and many more...</h4>
+                  <p>
+                    The two links below are fairly comprehensive lists of the many standard
+                    events available for use in JavaScript.
+                  </p>
+                  <a href="http://www.w3schools.com/jsref/dom_obj_event.asp" target="_blank">w3schools</a><br>
+                  <a href="https://developer.mozilla.org/en-US/docs/Web/Events" target="_blank">Mozilla Developer Network</a>
+              <h3>Examples</h3>
+                <code>
+                  el.addEventListener('click', evt => {<br>
+                  &nbsp;&nbsp;console.log('click event fired');<br>
+                  });<br>
+                </code><br>
+
+                <code>
+                  el.addEventListener('keyup', evt => {<br>
+                  &nbsp;&nbsp;console.log('keyup event fired');<br>
+                  });<br>
+                </code><br>
+
+                <code>
+                  window.addEventListener('beforeunload', evt => {<br>
+                  &nbsp;&nbsp;alert('Window is about to close');<br>
+                  });<br>
+                </code>
+              <h3>Demo</h3>
+                <!-- styles for the touch-demo div -->
+                <style>
+                  input.keyup-demo {
+                    border: 1px solid rgba(0,0,0,0.5);
+                    border-radius: 5px;
+                    margin: 10px 5px;
+                    padding: 5px;
+                  }
+                </style>
+                <button class="custom-button click-demo">Click for click event</button><br>
+                <input type="text" class="keyup-demo" placeholder="Type to see keyup event..."><span class="keyup-demo"></span><br>
+                <input type="checkbox" class="beforeunload-demo">&nbsp;Enable confirmation of window closing
+                <div>Try to close the tab to see the <code>beforeunload</code> event in action</div>
+            </section>
+          </div>
+        </div>
+      </main>
+      <% include ../partials/footer %>
+    </div>
+
+    <script>
+    // Load demo
+      const loadSection = document.querySelector('.method.load');
+      window.addEventListener('load', evt => {
+        if (window.location.search.match(/pauseLoad/i)) debugger;
+        console.log({load: evt});
+        loadSection.querySelector('.demo-output').textContent = 'loaded';
+      });
+    
+    // Touch demo
+      const touchDemo = document.querySelector('.method.touch .touch-demo');
+      var preventScroll = document.querySelector('.method.touch .prevent-scroll');
+      var startOnce = moveOnce = endOnce = false;
+      var timesMoved = 0;
+      touchDemo.addEventListener('touchstart', evt => {
+        if (preventScroll.checked) evt.preventDefault();
+
+        if (!startOnce) {
+          console.log({start: evt});
+          startOnce = true;
+        }
+        touchDemo.textContent = 'touch event started';
+        touchDemo.style.background = 'green';
+      });
+      touchDemo.addEventListener('touchmove', evt => {
+        if (preventScroll.checked) evt.preventDefault();
+        
+        if (!moveOnce) {
+          console.log({move: evt});
+          moveOnce = true;
+        }
+        touchDemo.textContent = 'touch has moved';
+        if (timesMoved === 0) {
+          touchDemo.style.background = `rgba(
+            ${random(0,255)},
+            ${random(0,255)},
+            ${random(0,255)},
+            1
+          )`;
+        }
+        timesMoved = ++timesMoved % 15;
+      });
+
+      touchDemo.addEventListener('touchend', evt => {
+        if (preventScroll.checked) evt.preventDefault();
+        
+        if (!endOnce) {
+          console.log({end: evt});
+          endOnce = true;
+        }
+        touchDemo.textContent = 'touch event ended';
+        touchDemo.style.background = 'red';
+      });
+    
+    // Animation events
+      const startBtn = document.querySelector('.method.animation .start-demo');
+      const spinner = document.querySelector('.method.animation .anim-demo');
+      var animInProgress = false;
+      startBtn.addEventListener('click', evt => {
+        spinner.classList.toggle('spinner');
+        animInProgress = !animInProgress;
+        startBtn.textContent = animInProgress ? 'Stop Demo' : 'Start Demo';
+      });
+
+      const stats = document.querySelectorAll('.animation-stats div')
+      var started = iteration = ended = 0;
+      spinner.addEventListener('animationstart', evt => {
+        stats[0].textContent = ++started;
+      });
+      spinner.addEventListener('animationiteration', evt => {
+        stats[1].textContent = ++iteration;
+      });
+      spinner.addEventListener('animationend', evt => {
+        stats[2].textContent = ++ended;
+      });
+
+      const animResetBtn = document.querySelector('.method.animation .reset-demo');
+      animResetBtn.addEventListener('click', evt => {
+        spinner.classList.remove('spinner');
+        stats.forEach(stat => stat.textContent = '0');
+        startBtn.textContent = 'Start Demo';
+        animInProgress = false;
+        started = iteration = ended = 0;
+      });
+
+    // Other events
+      const clickDemo = document.querySelector('.method.other .click-demo');
+      const keyupDemo = document.querySelector('.method.other input.keyup-demo');
+      const keyupResult = document.querySelector('.method.other span.keyup-demo');
+      const defaultKeyupMsg = 'Type in input to watch this change';
+      const beforeUnloadDemo = document.querySelector('.method.other .beforeunload-demo');
+
+      clickDemo.addEventListener('click', evt => {
+        alert('You made a click event!');
+      });
+      keyupDemo.addEventListener('keyup', evt => {
+        const value = keyupDemo.value;
+        keyupResult.textContent = value || defaultKeyupMsg;
+      });
+      window.addEventListener('beforeunload', evt => {
+        if (beforeUnloadDemo.checked) evt.returnValue = '';
+      });
+      keyupResult.textContent = defaultKeyupMsg;
+
+    // Hide buttons
+      document.querySelectorAll('.hide-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const content = btn.parentElement.nextElementSibling;
+          content.classList.toggle('hidden');
+          btn.textContent = btn.textContent === 'Hide' ? 'Show' : 'Hide';
+        });
+      });
+    
+    // Hide all content if URL says to
+      const hideAll = window.location.search.match(/hideall=(true|false)/i);
+      if (hideAll && hideAll[1] === "true") {
+        document.querySelectorAll('.method .content').forEach(sec => {
+          sec.classList.add('hidden');
+          sec.parentElement.querySelector('.hide-btn').textContent = 'Show';        
+        });
+      }
+    </script>
+  </body>
+</html>
