@@ -328,6 +328,7 @@
       var preventScroll = document.querySelector('.method.touch .prevent-scroll');
       var startOnce = moveOnce = endOnce = false;
       var timesMoved = 0;
+
       touchDemo.addEventListener('touchstart', evt => {
         if (preventScroll.checked) evt.preventDefault();
 
@@ -338,6 +339,7 @@
         touchDemo.textContent = 'touch event started';
         touchDemo.style.background = 'green';
       });
+
       touchDemo.addEventListener('touchmove', evt => {
         if (preventScroll.checked) evt.preventDefault();
         
@@ -372,6 +374,7 @@
       const startBtn = document.querySelector('.method.animation .start-demo');
       const spinner = document.querySelector('.method.animation .anim-demo');
       var animInProgress = false;
+
       startBtn.addEventListener('click', evt => {
         spinner.classList.toggle('spinner');
         animInProgress = !animInProgress;
@@ -380,12 +383,15 @@
 
       const stats = document.querySelectorAll('.animation-stats div')
       var started = iteration = ended = 0;
+
       spinner.addEventListener('animationstart', evt => {
         stats[0].textContent = ++started;
       });
+
       spinner.addEventListener('animationiteration', evt => {
         stats[1].textContent = ++iteration;
       });
+
       spinner.addEventListener('animationend', evt => {
         stats[2].textContent = ++ended;
       });
@@ -409,13 +415,16 @@
       clickDemo.addEventListener('click', evt => {
         alert('You made a click event!');
       });
+
       keyupDemo.addEventListener('keyup', evt => {
         const value = keyupDemo.value;
         keyupResult.textContent = value || defaultKeyupMsg;
       });
+
       window.addEventListener('beforeunload', evt => {
         if (beforeUnloadDemo.checked) evt.returnValue = '';
       });
+      
       keyupResult.textContent = defaultKeyupMsg;
 
     // Hide buttons
