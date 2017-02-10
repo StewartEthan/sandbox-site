@@ -3,7 +3,7 @@
  */
 
 /**
- * Returns a random number within a range
+ * Returns a random integer within a range
  * @param  {Number} min minimum random number to return
  * @param  {Number} max maximum number to return
  * @return {Number}     random number within the range provided
