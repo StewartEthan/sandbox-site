@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%
+      var page = page || {};
+      page.title = "CIT 261: Local Storage";
+    %>
+    <% include ../partials/head-tags %>
+    <style>
+      button:disabled {
+        background: #D0D0D0;
+        color: black;
+        cursor: not-allowed;
+        text-decoration: line-through;
+        text-shadow: none;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h2, code {
+        font-family: firacode, mono;
+      }
+
+      code {
+        font-size: 1.05em;
+        letter-spacing: 1px;
+      }
+
+      li code:first-child::after {
+        content: ": ";
+      }
+
+      .button-wrapper button {
+        flex-grow: 1;
+      }
+
+      .button-wrapper, .controls {
+        display: flex;
+        justify-content: space-between;
+      }
+      .colored-div {
+        background: red;
+        color: white;
+        cursor: default;
+        margin: 10px 0;
+        padding: 5px;
+        text-align: center;
+      }
+
+      .controls button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin: 0;
+        padding: 7px 15px;
+      }
+
+      .controls input {
+        border: 1px solid #002265;
+        border-radius: 5px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        flex-grow: 1;
+        font-family: verdana, sans-serif;
+        font-size: 1em;
+        padding: 5px;
+      }
+
+      .custom-button {
+        margin: 0 0 20px;
+      }
+
+      .custom-button.hide-btn {
+        font-size: 0.95em;
+        margin: 0;
+        padding: 3px 10px;
+      }
+
+      .custom-button.reset {
+        font-size: 0.75em;
+        margin: 0;
+      }
+
+      .method {
+        border: 1px solid rgba(0,0,0,0.5);
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+        margin: 40px auto;
+        max-width: 500px;
+        padding: 0 20px 20px;
+      }
+
+      .optional {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <% include ../partials/header %>
+      <main>
+        <div>
+          <h1>Cit 261: Local Storage</h1>
+          <div class="method api">
+            <h2>localStorage API <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+              <h3>Examples</h3>
+            </section>
+          </div>
+
+          <div class="method types">
+            <h2>Storing Different Types <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+              <h3>Examples</h3>
+              <h3>Demo</h3>
+            </section>
+          </div>
+        </div>
+      </main>
+      <% include ../partials/footer %>
+    </div>
+
+    <script>
+    
+    // Hide buttons
+      document.querySelectorAll('.hide-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const content = btn.parentElement.nextElementSibling;
+          content.classList.toggle('hidden');
+          btn.textContent = btn.textContent === 'Hide' ? 'Show' : 'Hide';
+        });
+      });
+    
+    // Hide all content if URL says to
+      const hideAll = window.location.search.match(/hideall=(true|false)/i);
+      if (hideAll[1] === "true") {
+        document.querySelectorAll('.method .content').forEach(sec => {
+          sec.classList.add('hidden');
+          sec.parentElement.querySelector('.hide-btn').textContent = 'Show';        
+        });
+      }
+    </script>
+  </body>
+</html>
