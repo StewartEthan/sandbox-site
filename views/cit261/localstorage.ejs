@@ -104,10 +104,19 @@
         <div>
           <h1>Cit 261: Local Storage</h1>
           <div class="method api">
-            <h2>localStorage API <button class="custom-button hide-btn">Hide</button></h2>
+            <h2>localStorage overview <button class="custom-button hide-btn">Hide</button></h2>
             <section class="content">
               <h3>Summary</h3>
-              <h3>Examples</h3>
+                The <code>localStorage</code> object, which lives in the global <code>window</code>
+                variable, is a way to maintain a cache of information that may be needed on multiple
+                pages in a site's domain. You store data in it as key/value pairs. Each key is also
+                a property on the <code>localStorage</code> object, so it may be accessed with either
+                the dot notation (<code>localStorage.keyName</code>) or bracket notation
+                (<code>localStorage['keyName']</code>). It also comes with a few methods to easily
+                manipulate the data stored within, such as <code>getItem(keyName)</code> (to get
+                the value associated with <code>keyName</code>), <code>setItem(keyName, value)</code>
+                (to create a key/value pairing between <code>keyName</code> and <code>value</code>),
+                and <code>removeItem(keyName)</code> (to remove the item identified by <code>keyName</code>).
             </section>
           </div>
 
@@ -115,8 +124,83 @@
             <h2>Storing Different Types <button class="custom-button hide-btn">Hide</button></h2>
             <section class="content">
               <h3>Summary</h3>
-              <h3>Examples</h3>
+                <p>
+                  Primitive data types (in JavaScript, these are <code>Number</code>, <code>Boolean</code>,
+                  and <code>String</code>) can all be stored as values in <code>localStorage</code>, but
+                  they will be added as strings by calling the built-in <code>toString</code> method. Therefore,
+                  keep in mind that when you access them, they will all be returned as strings (for example,
+                  <code>'1'</code> instead of <code>1</code>, and <code>'true'</code> instead of <code>true</code>).
+                  This can cause some problems if using the value in a comparison, especially when using strict
+                  equality comparison (<code>===</code> instead of <code>==</code>), so make sure to account
+                  for the type difference in whatever way works best for your code.
+                </p>
+                <p>
+                  Objects and arrays (including array-like structures such as NodeList) can also be stored
+                  in <code>localStorage</code>, but because calling <code>toString</code> on any of those
+                  non-primitive types does not produce useful data (go try it for yourself to see), they
+                  will need to be converted to a useful string first. The best way for this, in my opinion,
+                  is to use the built-in <code>JSON.stringify</code> method. You can turn the data back into
+                  its original form with <code>JSON.parse</code>, so while the extra step is minorly inconvenient,
+                  it isn't too bad overall.
+                </p>
+                <p>
+                  You can use the methods mentioned in the first section (<code>getItem</code>, <code>setItem</code>,
+                  and <code>removeItem</code>) to add, change, and remove items as necessary.
+                </p>
               <h3>Demo</h3>
+                <style>
+                  .demo-display {
+                    padding: 5px;
+                    min-height: 20px;
+                  }
+                  pre.demo-display {
+                    border: 1px solid black;
+                    font-family: 'Courier New', monospace;
+                    
+                  }
+                  .method.types .demo-controls {
+                    display: flex;
+                  }
+                  .method.types .demo-controls button {
+                    flex: 1;
+                    margin: 0 2px;
+                  }
+                </style>
+                <div class="demo-controls">
+                  <button class="custom-button" data-type="string">String</button>
+                  <button class="custom-button" data-type="number">Number</button>
+                  <button class="custom-button" data-type="boolean">Boolean</button>
+                  <button class="custom-button" data-type="array">Array</button>
+                  <button class="custom-button" data-type="object">Object</button>
+                </div>
+                <pre class="demo-display"></pre>
+            </section>
+          </div>
+
+          <div class="method event">
+            <h2>storage event <button class="custom-button hide-btn">Hide</button></h2>
+            <section class="content">
+              <h3>Summary</h3>
+                Anytime you make a change to the <code>localStorage</code> object, the <code>storage</code>
+                event is fired. You can listen for this event and handle any changes as desired. One real-life
+                application of this that I have found and used at my job is to set items on <code>localStorage</code>
+                on one page, and listen for the <code>storage</code> event on another page on the same domain.
+                I determined which key changed and made changes to that second page based on that information.
+                Along these lines, keep this <strong>important</strong> piece of information in mind: the storage
+                event is only fired in the windows with the changed storage object EXCEPT THE ONE WHERE THE CHANGE
+                HAPPENS. That means you can only listen for the changes on different pages. In order to see the demo
+                below, open this page in a second tab, so you have two copies of it, click one of the buttons in the
+                demo above in one tab, and look at this demo below in the other tab.
+              <h3>Demo</h3>
+                <style>
+                  div.demo-display {
+                    border: 1px solid black;
+                  }
+                  div.demo-display::before {
+                    content: 'Most recent storage key changed: ';
+                  }
+                </style>
+                <div class="demo-display">NONE CHANGED YET</div>
             </section>
           </div>
         </div>
@@ -125,7 +209,55 @@
     </div>
 
     <script>
-    
+    // Storing different types
+      const typesBtns = document.querySelectorAll('.method.types .custom-button');
+      const typesDisplay = document.querySelector('.method.types .demo-display');
+      const typesValues = {
+        string: ['Hello world!', 'Anybody want a peanut?', 'I am...Nachoooooooooooooooooo', 'May the Force be with you'],
+        number: [42, 23, 0, -400, 80],
+        boolean: [true, false, true, true, false, false],
+        array: [
+          ['this','is','array','1'],
+          ['this','is','array','2'],
+          ['this','is','array','3'],
+          ['this','is','array','4'],
+          ['this','is','array','5'],
+        ],
+        object: [
+          {a:'object',b:1},
+          {a:'object',b:2},
+          {a:'object',b:3},
+          {a:'object',b:4},
+          {a:'object',b:5},
+        ]
+      };
+
+      typesBtns.forEach(btn => {
+        btn.addEventListener('click', evt => {
+          const type = btn.dataset.type;
+          const newIdx = random(0, typesValues[type].length);
+          let newVal = typesValues[type][newIdx];
+          if (type === 'array' || type === 'object') newVal = JSON.stringify(newVal);
+
+          localStorage.setItem(`key_${type}`, newVal);
+          displayLocalStorage();
+        });
+      });
+
+      localStorage.setItem('key_string', 'Hello world!');
+      localStorage.setItem('key_number', 42);
+      localStorage.setItem('key_boolean', true);
+      localStorage.setItem('key_array', JSON.stringify(['this', 'is', 'an', 'array']));
+      localStorage.setItem('key_object', JSON.stringify({a:'asdf!',b:42}));
+      displayLocalStorage();
+
+    // storage event
+      const eventDisplay = document.querySelector('.method.event .demo-display');
+
+      window.addEventListener('storage', evt => {
+
+        eventDisplay.textContent = evt.key;
+      });
     // Hide buttons
       document.querySelectorAll('.hide-btn').forEach(btn => {
         btn.addEventListener('click', e => {
@@ -142,6 +274,20 @@
           sec.classList.add('hidden');
           sec.parentElement.querySelector('.hide-btn').textContent = 'Show';        
         });
+      }
+    
+    // Functions
+      function displayLocalStorage() {
+        const ugly = JSON.stringify(localStorage).split('","');
+        let prettyPrint = '{\n';
+        
+        prettyPrint += `${ugly[0].substr(1)}"\n`;
+        prettyPrint += `"${ugly[1]}"\n`;
+        prettyPrint += `"${ugly[2]}"\n`;
+        prettyPrint += `"${ugly[3]}"\n`;
+        prettyPrint += `"${ugly[4].split('}').join('')}"\n}`;
+
+        typesDisplay.textContent = prettyPrint;
       }
     </script>
   </body>
