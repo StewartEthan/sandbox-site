@@ -59,7 +59,10 @@ app.get('/cit261/:topic', (req,res) => {
 app.get('/ebay', (req,res) => {
   const keywordsParam = req.query.keywords;
   // TODO: Return error object?
-  if (keywords === undefined || keywords === '') res.send({});
+  if (keywordsParam === undefined || keywordsParam === '') {
+    res.send({});
+    return;
+  }
   const paginateParam = req.query.pagination !== undefined && req.query.pagination !== 'false';
   const entryParam = req.query.entryCount;
 
