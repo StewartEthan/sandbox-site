@@ -1,5 +1,5 @@
 /**
- * Builds the URL for interacting with the eBay API.
+ * Builds the URL for searching with the eBay API.
  * I may at some point abstract this to work with multiple use cases
  * 
  * @param  {String}  keywords       the keywords to search for
