@@ -1,42 +1,10 @@
 // Initial app setup
-var express = require('express'),
-    stylus  = require('stylus'),
-    http    = require('http');
+var express   = require('express'),
+    stylus    = require('stylus'),
+    buildPath = require('./controllers/utility.js').buildPath
+    fetch     = require('node-fetch');
 
 var app = express();
-
-const httpMethods = ["GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS"];
-function xhrserver(method, url, headers, data, cb) {
-  // Handle potential errors with params
-  if (httpMethods.indexOf(method) === -1) {
-    throw new Error('You must use a valid HTTP method');
-  }
-  if (typeof url !== "string" || url === '') {
-    throw new Error('url argument must not be empty');
-  }
-  if (headers === undefined) headers = null;
-  if (data === undefined) data = null;
-
-  const xhreq = new XMLHttpRequest();
-
-  xhreq.open(method, url, true);
-
-  xhreq.onreadystatechange = e => {
-    if (xhreq.readyState === XMLHttpRequest.DONE) {
-      // Only use cb if its a function, allowing for it to be optional
-      if (typeof cb === 'function') {
-        cb(xhreq);
-      }
-    }
-  }
-
-  // Set each header
-  for (let key in headers) {
-    xhreq.setRequestHeader(key, headers[key]);
-  }
-
-  xhreq.send(data);
-}
 
 // Specify the port (I use 3000 as a default for personal dev)
 app.set('port', (process.env.PORT || 3000));
@@ -89,33 +57,24 @@ app.get('/cit261/:topic', (req,res) => {
 });
 
 app.get('/ebay', (req,res) => {
-  const options = {
-    host: 'svcs.ebay.com',
-    port: 80,
-    path: '/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=EthanSte-PriceCom-PRD-12466ad44-5e7a466a&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=harry%20potter%20phoenix&paginationInput.entriesPerPage=2',
-    method: 'GET',
-    headers: {}
-  };
-  const url = 'http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=EthanSte-PriceCom-PRD-12466ad44-5e7a466a&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=harry%20potter%20phoenix&paginationInput.entriesPerPage=2';
-  
-  const request = http.request(options, resp => {
-    let out = '';
-    resp.setEncoding('utf8');
-    resp.on('data', chunk => out += chunk);
-    resp.on('end', () => {
-      let obj;
-      try {
-        obj = JSON.parse(out);
-      } catch (err) {
-        console.error('Could not parse resp:', err);
-        res.send(resp);
-      }
+  const keywordsParam = req.query.keywords;
+  // TODO: Return error object?
+  if (keywords === undefined || keywords === '') res.send({});
+  const paginateParam = req.query.pagination !== undefined && req.query.pagination !== 'false';
+  const entryParam = req.query.entryCount;
 
-      res.send(obj);
-    });
-  });
-  request.on('error', err => console.error(err));
-  request.end();
+  const url = `http://svcs.ebay.com${buildPath(keywordsParam, paginateParam, entryParam)}`;
+  
+  // Tears of joy for async/await. Praise be to Node 7
+  (async() => {
+    try {
+      const resp = await fetch(url);
+      const data = await resp.json();
+      res.send(data);
+    } catch (err) {
+      console.error(`Error while fetching ${url}:`, err);
+    }
+  })();
 });
 
 // 404 handling - keep as last route
