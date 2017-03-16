@@ -72,7 +72,7 @@ app.get('/ebay', (req,res) => {
       const data = await resp.json();
       res.send(data);
     } catch (err) {
-      console.error(`Error while fetching ${url}:`, err);
+      res.send(`Error while fetching ${url}:`, err);
     }
   })();
 });
