@@ -1,7 +1,7 @@
 // Initial app setup
 var express   = require('express'),
     stylus    = require('stylus'),
-    buildPath = require('./controllers/utility.js').buildPath
+    buildUrl = require('./controllers/utility.js').buildUrl
     fetch     = require('node-fetch');
 
 var app = express();
@@ -57,16 +57,17 @@ app.get('/cit261/:topic', (req,res) => {
 });
 
 app.get('/ebay', (req,res) => {
-  const keywordsParam = req.query.keywords;
-  // TODO: Return error object?
+  const keywordsParam = req.query.query;
+  
   if (keywordsParam === undefined || keywordsParam === '') {
-    res.send({});
+    res.send({error: true, msg: 'Please specify a query!'});
     return;
   }
-  const paginateParam = req.query.pagination !== undefined && req.query.pagination !== 'false';
-  const entryParam = req.query.entryCount;
 
-  const url = `http://svcs.ebay.com${buildPath(keywordsParam, paginateParam, entryParam)}`;
+  const limitParam = req.query.limitResults !== undefined && req.query.limitResults !== 'false';
+  const entryParam = req.query.maxEntries;
+
+  const url = buildUrl(keywordsParam, limitParam, entryParam);
   
   // Tears of joy for async/await. Praise be to Node 7
   (async() => {
