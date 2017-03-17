@@ -79,12 +79,11 @@ function searchForItem(query, maxEntries) {
       result.upc = null;
       for (let i = 0; i < product.ProductID.length; ++i) {
         let id = product.ProductID[i];
-        if (id.Type.toLowerCase() === 'reference' && !result.upc) {
+        if (id.Type.toLowerCase() === 'reference') {
           result.reference = id.Value;
         }
         if (id.Type.toLowerCase() === 'upc') {
           result.upc = id.Value;
-          if (result.reference) delete result.reference;
           break;
         }
       }
