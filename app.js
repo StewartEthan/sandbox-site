@@ -81,6 +81,27 @@ app.get('/ebay', (req,res) => {
   })();
 });
 
+app.get('/ebay/details', (req,res) => {
+  const id = req.query.id;
+  if ((typeof id !== 'string' && typeof id !== 'number') || id === '') {
+    res.send({error: true, msg: 'Invalid product reference ID. Product reference IDs must be in numeric format.'});
+    return;
+  }
+
+  const url = `
+    http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByProduct&SERVICE-VERSION=1.12.0&SECURITY-APPNAME=EthanSte-PriceCom-PRD-12466ad44-5e7a466a&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&paginationInput.entriesPerPage=10&productId.@type=ReferenceID&productId=${id}`;
+  
+  (async() => {
+    try {
+      const resp = await fetch(url);
+      const data = await resp.json();
+      res.send(data.findItemsByProductResponse[0]);
+    } catch (err) {
+      res.send(`Error while fetching ${url}:`, err);
+    }
+  })();
+});
+
 // 404 handling - keep as last route
 app.use((req,res) => {
   res.status(404).render('404');
