@@ -131,6 +131,12 @@ function getItemDetails(id) {
       return [];
     }
 
+    // Handling for search results coming back empty
+    if (!response.searchResult[0].item || response.searchResult[0].item.length <= 0) {
+      console.error('No search results found');
+      return [];
+    }
+
     const prices = [];
     response.searchResult[0].item.forEach(item => {
       let price = original = item.sellingStatus[0].currentPrice[0].__value__;
