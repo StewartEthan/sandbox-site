@@ -141,15 +141,6 @@
 
     // Send the request
     xhr.send(null);
-
-  
-    const hideAll = window.location.search.match(/hideall=(true|false)/i);
-    if (hideAll[1] === "true") {
-      document.querySelectorAll('.method .content').forEach(sec => {
-        sec.classList.add('hidden');
-        sec.parentElement.querySelector('.hide-btn').textContent = 'Show';        
-      });
-    }
   </script>
 </body>
 </html>
