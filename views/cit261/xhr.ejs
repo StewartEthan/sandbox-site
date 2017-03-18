@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Ethan Stewart">
+  <title></title>
+</head>
+
+<body>
+  <p>
+    Open the developer console to see the results of an XHR request
+  </p>
+
+  <script>
+    // Create new instance of XMLHttpRequest
+    const xhr = new XMLHttpRequest();
+    const method = 'GET';
+    const url = 'http://www.omdbapi.com/?s=star+wars';
+
+    /**
+     * Call the open method
+     * xhr.open(method, url, async, user, password);
+     * method: what type of HTTP request to send
+     *   most common: GET, POST, PUT, DELETE
+     * url: the URL to send the request to
+     * async: whether to make the call asyncronously (optional, defaults to true)
+     * user: username for authentication purposes (optional, defaults to null)
+     * password: password for authentication purposes (optional, defaults to null)
+     */
+    xhr.open(method, url, true);
+
+    /**
+     * Set the readystatechange event listener
+     * This is the code to be run when the request is finished
+     * Every example I found, including how we implement it at
+     *   my job, always checks the readyState to be sure that
+     *   the request is done
+     * If it is done, the object in xhr will contain useful information
+     *   such as status and response. If the request was successful (i.e.
+     *   it returned a status of 200), then response will contain the info
+     *   returned from the server
+     */
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState == XMLHttpRequest.DONE) {
+        let response;
+        try {
+          response = JSON.parse(xhr.response);
+        } catch (err) {
+          console.error('Could not parse response as JSON:', err);
+          return;
+        }
+        console.info('Status:', xhr.status); // 200 means success, 404 means page not found, etc.
+        console.log(response);
+      }
+    }
+
+    /**
+     * Set any HTTP headers that you want to send with the request
+     * This is how you can pass along a lot of other useful info with
+     * the request, such as authentication data, what type of encoding
+     * you're expecting to come back, and several others. Google HTTP
+     * headers if you want to learn more
+     */
+    xhr.setRequestHeader('Accept', 'application/json');
+
+    /**
+     * Send the request
+     * Worth noting that if you don't set the Accept header like I did
+     * above, it will automatically set it to * / * (w/o spaces), which
+     * accepts anything in return.
+     */
+    xhr.send(null);
+  </script>
+</body>
+</html>
