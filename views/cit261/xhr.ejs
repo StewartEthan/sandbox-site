@@ -1,45 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="author" content="Ethan Stewart">
-  <title></title>
+  <%
+    var page = page || {};
+    page.title = "CIT 261: DOM Manipulation";
+  %>
+  <% include ../partials/head-tags %>
+  <style>
+    button:disabled {
+      background: #D0D0D0;
+      color: black;
+      cursor: not-allowed;
+      text-decoration: line-through;
+      text-shadow: none;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    h2, code {
+      font-family: firacode, mono;
+    }
+
+    code {
+      font-size: 1.05em;
+      letter-spacing: 1px;
+    }
+
+    li code:first-child::after {
+      content: ": ";
+    }
+
+    .button-wrapper button {
+      flex-grow: 1;
+    }
+
+    .button-wrapper, .controls {
+      display: flex;
+      justify-content: space-between;
+    }
+    .colored-div {
+      background: red;
+      color: white;
+      cursor: default;
+      margin: 10px 0;
+      padding: 5px;
+      text-align: center;
+    }
+
+    .controls button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      margin: 0;
+      padding: 7px 15px;
+    }
+
+    .controls input {
+      border: 1px solid #002265;
+      border-radius: 5px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      flex-grow: 1;
+      font-family: verdana, sans-serif;
+      font-size: 1em;
+      padding: 5px;
+    }
+
+    .custom-button {
+      margin: 0 0 20px;
+    }
+
+    .custom-button.hide-btn {
+      font-size: 0.95em;
+      margin: 0;
+      padding: 3px 10px;
+    }
+
+    .custom-button.reset {
+      font-size: 0.75em;
+      margin: 0;
+    }
+
+    .method {
+      border: 1px solid rgba(0,0,0,0.5);
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+      margin: 40px auto;
+      max-width: 500px;
+      padding: 0 20px 20px;
+    }
+
+    .optional {
+      font-style: italic;
+    }
+  </style>
 </head>
 
 <body>
-  <p>
-    Open the developer console to see the results of an XHR request
-  </p>
+  <div>
+    <% include ../partials/header %>
+    <main>
+      <div>
+        <h1>Cit 261: DOM Manipulation</h1>
+        <p>Open the developer console to see the results of an XHR request</p>
+      </div>
+    </main>
+    <% include ../partials/footer %>
+  </div>
 
   <script>
+  // XHR example
     // Create new instance of XMLHttpRequest
     const xhr = new XMLHttpRequest();
     const method = 'GET';
     const url = 'http://www.omdbapi.com/?s=star+wars';
 
-    /**
-     * Call the open method
-     * xhr.open(method, url, async, user, password);
-     * method: what type of HTTP request to send
-     *   most common: GET, POST, PUT, DELETE
-     * url: the URL to send the request to
-     * async: whether to make the call asyncronously (optional, defaults to true)
-     * user: username for authentication purposes (optional, defaults to null)
-     * password: password for authentication purposes (optional, defaults to null)
-     */
+    // Call the open method
     xhr.open(method, url, true);
 
-    /**
-     * Set the readystatechange event listener
-     * This is the code to be run when the request is finished
-     * Every example I found, including how we implement it at
-     *   my job, always checks the readyState to be sure that
-     *   the request is done
-     * If it is done, the object in xhr will contain useful information
-     *   such as status and response. If the request was successful (i.e.
-     *   it returned a status of 200), then response will contain the info
-     *   returned from the server
-     */
+    // Set the readystatechange event listener
+    // This is the code to be run when the request is finished
     xhr.onreadystatechange = () => {
       if (xhr.readyState == XMLHttpRequest.DONE) {
         let response;
@@ -54,22 +135,29 @@
       }
     }
 
-    /**
-     * Set any HTTP headers that you want to send with the request
-     * This is how you can pass along a lot of other useful info with
-     * the request, such as authentication data, what type of encoding
-     * you're expecting to come back, and several others. Google HTTP
-     * headers if you want to learn more
-     */
+    // Set any HTTP headers that you want to send with the request
     xhr.setRequestHeader('Accept', 'application/json');
 
-    /**
-     * Send the request
-     * Worth noting that if you don't set the Accept header like I did
-     * above, it will automatically set it to * / * (w/o spaces), which
-     * accepts anything in return.
-     */
+    // Send the request
     xhr.send(null);
+
+  // Hide buttons
+    document.querySelectorAll('.hide-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const content = btn.parentElement.nextElementSibling;
+        content.classList.toggle('hidden');
+        btn.textContent = btn.textContent === 'Hide' ? 'Show' : 'Hide';
+      });
+    });
+  
+  // Hide all content if URL says to
+    const hideAll = window.location.search.match(/hideall=(true|false)/i);
+    if (hideAll[1] === "true") {
+      document.querySelectorAll('.method .content').forEach(sec => {
+        sec.classList.add('hidden');
+        sec.parentElement.querySelector('.hide-btn').textContent = 'Show';        
+      });
+    }
   </script>
 </body>
 </html>
