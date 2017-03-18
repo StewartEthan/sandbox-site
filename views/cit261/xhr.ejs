@@ -142,16 +142,7 @@
     // Send the request
     xhr.send(null);
 
-  // Hide buttons
-    document.querySelectorAll('.hide-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
-        const content = btn.parentElement.nextElementSibling;
-        content.classList.toggle('hidden');
-        btn.textContent = btn.textContent === 'Hide' ? 'Show' : 'Hide';
-      });
-    });
   
-  // Hide all content if URL says to
     const hideAll = window.location.search.match(/hideall=(true|false)/i);
     if (hideAll[1] === "true") {
       document.querySelectorAll('.method .content').forEach(sec => {
