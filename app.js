@@ -74,6 +74,23 @@ app.get('/ebay', (req,res) => {
     try {
       const resp = await fetch(url);
       const data = await resp.json();
+
+      // TODO: Add price array to data
+      res.send(data);
+    } catch (err) {
+      res.send(`Error while fetching ${url}:`, err);
+    }
+  })();
+});
+
+app.get('/walmart', (req,res) => {
+  // API key, search query
+  const url = `http://api.walmartlabs.com/v1/search?apiKey=${req.query.apiKey}&query=${req.query.query}`;
+
+  (async() => {
+    try {
+      const resp = await fetch(url);
+      const data = await resp.json();
       res.send(data);
     } catch (err) {
       res.send(`Error while fetching ${url}:`, err);
