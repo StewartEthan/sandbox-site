@@ -2,3 +2,4 @@ node_modules/
 .env
 assets/css/compiled/*.css
 *.log
+Thumbs.db
