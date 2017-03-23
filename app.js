@@ -84,7 +84,7 @@ app.get('/ebay', (req,res) => {
 });
 
 app.get('/walmart', (req,res) => {
-  res.header('Access-Control-Allow-Origin', 'http://priceflip.dustincrossley.com/*');
+  res.header('Access-Control-Allow-Origin', '*');
 
   // API key, search query
   const url = `http://api.walmartlabs.com/v1/search?apiKey=${req.query.apiKey}&query=${req.query.query}`;
