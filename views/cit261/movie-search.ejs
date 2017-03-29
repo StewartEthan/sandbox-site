@@ -113,6 +113,7 @@
     </div>
 
     <script>
+      // Variable declarations
       const results = document.querySelector('.results');
       const spinner = document.createElement('div');
       spinner.classList.add('spinner');
@@ -121,13 +122,17 @@
       const input = searchForm.querySelector('input');
       const searchBtn = searchForm.querySelector('button');
 
+      // Make sure the search field is automatically in focus
       input.focus();
 
+      // Prepare a message tag to be used as needed
       const message = document.createElement('p');
       message.classList.add('msg');
 
+      // Prevent page refresh on form submission
       searchForm.addEventListener('submit', e => e.preventDefault());
 
+      // Handle the search button being clicked
       searchBtn.addEventListener('click', e => {
         // Get and validate the input
         const query = input.value;
@@ -138,6 +143,8 @@
 
         // Don't let the user activate back-to-back XHR reqs
         searchBtn.disabled = true;
+
+        // Add the spinner to the results section
         clearResults();
         results.appendChild(spinner);
 
@@ -235,7 +242,7 @@
         return container;
       }
 
-      // Change the contents of the results section to a message
+      // Changes the contents of the results section to a message
       function displayMessage(msg) {
         // Clear the results section
         clearResults();
