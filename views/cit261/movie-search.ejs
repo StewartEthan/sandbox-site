@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%
+      var page = page || {};
+      page.title = "Movie Search";
+    %>
+    <% include ../partials/head-tags %>
+    <style>
+      button.custom-button {
+        border: 4px solid #002265;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        letter-spacing: 1px;
+        margin: 0;
+        padding: 10px;
+        transition: 0.15s all linear;
+      }
+      button:disabled {
+        background: #D0D0D0;
+        border-color: #D0D0D0;
+        color: black;
+        cursor: not-allowed;
+        text-shadow: none;
+      }
+      button:hover:not(:disabled) {
+        background-color: white;
+        color: #002265;
+        text-shadow: 0 0;
+      }
+      form {
+        display: flex;
+        justify-content: center;
+      }
+      h1 {
+        text-align: center;
+      }
+      input {
+        border: 1px solid #a9a9a9;
+        border-right: none;
+        flex-grow: 1;
+        font-size: 1.25rem;
+        letter-spacing: 1px;
+        max-width: 500px;
+        padding: 5px;
+        padding-left: 10px;
+      }
+      input::-webkit-search-cancel-button {
+        cursor: pointer;
+        transition: 0.15s transform linear;
+      }
+      input::-webkit-search-cancel-button:hover {
+        transform: scale(1.15);
+      }
+      .movie-wrapper {
+        border: 1px solid #a9a9a9;
+        border-radius: 5px;
+        box-shadow: 2px 2px 7px #a9a9a9;
+        display: flex;
+        margin: 25px auto;
+        padding: 20px;
+      }
+      .movie-wrapper .img-wrapper {
+        max-width: 50%;
+      }
+      .movie-wrapper .img-wrapper img {
+        height: auto;
+        max-width: 100%;
+      }
+      .movie-wrapper .info-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px;
+        max-width: 45%;
+      }
+      .movie-wrapper .info-wrapper label {
+        font-size: 1.2rem;
+      }
+      .msg {
+        color: #a9a9a9;
+        font-size: 2rem;
+        line-height: 2.5rem;
+        margin: 0 auto;
+        max-width: 50vw;
+        text-align: center;
+      }
+      .results {
+        margin-top: 50px;
+      }
+      .spinner {
+        height: 70px;
+        width: 70px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <% include ../partials/header %>
+      <main>
+        <div>
+          <h1>Movie Search</h1>
+          <form id="searchForm">
+            <input type="search" class="search" placeholder="Enter a movie title...">
+            <button class="custom-button search-btn">Search</button>
+          </form>
+          <section class="results">
+            <div class="spinner hidden"></div>
+          </section>
+        </div>
+      </main>
+      <% include ../partials/footer %>
+    </div>
+
+    <script>
+      const results = document.querySelector('.results');
+      const spinner = document.createElement('div');
+      spinner.classList.add('spinner');
+
+      const searchForm = document.forms.searchForm;
+      const input = searchForm.querySelector('input');
+      const searchBtn = searchForm.querySelector('button');
+
+      input.focus();
+
+      const message = document.createElement('p');
+      message.classList.add('msg');
+
+      searchForm.addEventListener('submit', e => e.preventDefault());
+
+      searchBtn.addEventListener('click', e => {
+        // Get and validate the input
+        const query = input.value;
+        if (!query) {
+          displayMessage('Search field may not be empty.');
+          return;
+        }
+
+        // Don't let the user activate back-to-back XHR reqs
+        searchBtn.disabled = true;
+        clearResults();
+        results.appendChild(spinner);
+
+        // Search for the user's query
+        const url = `http://omdbapi.com?s=${query}`;
+        const hdr = {
+          'Accept': 'application/json'
+        }
+        xhr('GET', url, hdr, null, res => {
+          // Handle HTTP errors
+          if (res.status !== 200) {
+            displayMessage('An error occurred while searching. Please try again later.');
+            return;
+          }
+
+          // Parse into object and handle any errors that come up
+          let response;
+          try {
+            response = JSON.parse(res.response);
+          } catch (err) {
+            displayMessage('An error occurred while searching. Please try again later.');
+            return;
+          }
+
+          // If no results came back, display as such
+          if (response.Response === 'False') {
+            displayMessage('No results');
+            return;
+          }
+
+          // Process each result
+          response.Search.forEach(result => {
+            const title = result.Title || 'NO TITLE FOUND :(';
+            const year = result.Year || 'Unknown year';
+            const imdb = result.imdbID || null;
+            // TODO: Handle poster being N/A
+            // TODO: Possibly add placeholder image
+            const poster = result.Poster || '';
+
+            results.appendChild(createMovieWrapper(title, year, imdb, poster));
+          });
+
+          results.removeChild(spinner);
+          searchBtn.disabled = false;
+        });
+      });
+
+      // TODO: Add localStorage caching in beforeunload event
+
+      // Clears out the results section
+      function clearResults() {
+        results.innerHTML = '';
+      }
+
+      // Creates an element containing all the movie data
+      function createMovieWrapper(title, year, imdb, poster) {
+        // Create the main container
+        const container = document.createElement('div');
+        container.classList.add('movie-wrapper');
+
+        // Create the two inner containers
+        const imgContainer = document.createElement('div');
+        imgContainer.classList.add('img-wrapper');
+
+        const infoContainer = document.createElement('div');
+        infoContainer.classList.add('info-wrapper');
+
+        // Create the img element
+        const img = document.createElement('img');
+        img.src = poster;
+        img.alt = `${title} poster`;
+        imgContainer.appendChild(img);
+
+        // Create the title label
+        const label = document.createElement('label');
+        label.textContent = title;
+        infoContainer.appendChild(label);
+
+        // Create the release year paragraph
+        const p = document.createElement('p');
+        p.textContent = year;
+        infoContainer.appendChild(p);
+
+        // Create the IMDB link
+        const link = document.createElement('a');
+        link.href = imdb ? `http://www.imdb.com/title/${imdb}/` : 'http://www.imdb.com/';
+        link.target = '_blank';
+        link.textContent = 'View on IMDB';
+        infoContainer.appendChild(link);
+
+        // Append the inner containers to the main container
+        container.appendChild(imgContainer);
+        container.appendChild(infoContainer);
+
+        return container;
+      }
+
+      // Change the contents of the results section to a message
+      function displayMessage(msg) {
+        // Clear the results section
+        clearResults();
+
+        // Add the message to the results section
+        message.textContent = msg || '';
+        results.appendChild(message);
+
+        // Make sure the search button isn't disabled
+        searchBtn.disabled = false;
+      }
+    </script>
+  </body>
+</html>
