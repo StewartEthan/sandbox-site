@@ -1,7 +1,7 @@
 // Initial app setup
 var express   = require('express'),
     stylus    = require('stylus'),
-    buildUrl = require('./controllers/utility.js').buildUrl
+    buildUrl  = require('./controllers/utility.js').buildUrl,
     fetch     = require('node-fetch');
 
 var app = express();
@@ -57,6 +57,8 @@ app.get('/cit261/:topic', (req,res) => {
 });
 
 app.get('/ebay', (req,res) => {
+  res.header('Access-Control-Allow-Origin', '*');
+
   const keywordsParam = req.query.query;
   
   if (keywordsParam === undefined || keywordsParam === '') {
@@ -75,10 +77,76 @@ app.get('/ebay', (req,res) => {
       const resp = await fetch(url);
       const data = await resp.json();
 
-      // TODO: Add price array to data
-      res.send(data);
+      const ebayResults = [];
+      for (let idx = 0; idx < data.Product.length; ++idx) {
+        const product = data.Product[idx];
+        const result = {};
+
+        result.title = product.Title;
+        result.upc = null;
+        for (let i = 0; i < product.ProductID.length; ++i) {
+          let id = product.ProductID[i];
+          if (id.Type.toLowerCase() === 'reference') {
+            result.reference = id.Value;
+          }
+          if (id.Type.toLowerCase() === 'upc') {
+            result.upc = id.Value;
+            break;
+          }
+        }
+        result.details = {};
+        if (product.ItemSpecifics && product.ItemSpecifics.NameValueList) {
+          for (let i = 0; i < product.ItemSpecifics.NameValueList.length; ++i) {
+            let detail = product.ItemSpecifics.NameValueList[i];
+            result.details[detail.Name] = detail.Value;
+          }
+        }
+
+        
+        const id = result.reference || result.upc;
+        result.price = -1;
+        if (id) {
+          const priceUrl = `http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByProduct&SERVICE-VERSION=1.12.0&SECURITY-APPNAME=EthanSte-PriceCom-PRD-12466ad44-5e7a466a&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&paginationInput.entriesPerPage=10&productId.@type=ReferenceID&productId=${id}`;
+          const priceRes = await fetch(priceUrl);
+          let priceData = await priceRes.json();
+          priceData = priceData.findItemsByProductResponse[0];
+
+          let lowest = [];
+          if (!priceData.searchResult[0].item || priceData.searchResult[0].item.length <= 0) {
+            console.error('No search results found');
+            lowest.push({price: -1, link: ''});
+          } else {
+            priceData.searchResult[0].item.forEach(item => {
+              let price = item.sellingStatus[0].currentPrice[0].__value__;
+              price = parseFloat(price);
+              if (!isNaN(price)) {
+                price = price.toFixed(2);
+              } else {
+                price = 9999999999; // If we didn't get a valid number, this makes it get ignored
+              }
+              lowest.push({price, link: item.viewItemURL[0] || ''});
+            });
+          }
+          result.price = 9999999999;
+          result.link = '';
+          lowest.forEach(obj => {
+            if (obj.price < result.price) {
+              result.price = obj.price;
+              result.link = obj.link;
+            }
+          });
+        }
+
+        // TODO: Add thumbnail and link
+        result.img = product.StockPhotoURL;
+
+        ebayResults.push(result);
+
+        // stewartethan-portfolio.herokuapp.com/walmart?apiKey=1234&query=toaster oven
+      }
+      res.send(ebayResults);
     } catch (err) {
-      res.send(`Error while fetching ${url}:`, err);
+      res.send(`Error while fetching ${url}: ${err}`);
     }
   })();
 });
@@ -94,27 +162,6 @@ app.get('/walmart', (req,res) => {
       const resp = await fetch(url);
       const data = await resp.json();
       res.send(data);
-    } catch (err) {
-      res.send(`Error while fetching ${url}:`, err);
-    }
-  })();
-});
-
-app.get('/ebay/details', (req,res) => {
-  const id = req.query.id;
-  if ((typeof id !== 'string' && typeof id !== 'number') || id === '') {
-    res.send({error: true, msg: 'Invalid product reference ID. Product reference IDs must be in numeric format.'});
-    return;
-  }
-
-  const url = `
-    http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByProduct&SERVICE-VERSION=1.12.0&SECURITY-APPNAME=EthanSte-PriceCom-PRD-12466ad44-5e7a466a&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&paginationInput.entriesPerPage=10&productId.@type=ReferenceID&productId=${id}`;
-  
-  (async() => {
-    try {
-      const resp = await fetch(url);
-      const data = await resp.json();
-      res.send(data.findItemsByProductResponse[0]);
     } catch (err) {
       res.send(`Error while fetching ${url}:`, err);
     }
