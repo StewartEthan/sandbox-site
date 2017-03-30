@@ -129,6 +129,24 @@
       const message = document.createElement('p');
       message.classList.add('msg');
 
+      // Display cached search results, if there are any
+      if (localStorage.getItem('lastSearch')) {
+        let resultsArr = [];
+        try {
+          resultsArr = JSON.parse(localStorage.getItem('lastSearch'));
+        } catch (err) {
+          console.error('Error trying to load cached search results from localStorage:', err);
+        }
+
+        if (resultsArr && resultsArr.length > 0) {
+          processResults(resultsArr);
+
+          if (localStorage.getItem('lastQuery')) {
+            input.value = localStorage.getItem('lastQuery');
+          }
+        }
+      }
+
       // Prevent page refresh on form submission
       searchForm.addEventListener('submit', e => e.preventDefault());
 
@@ -138,6 +156,8 @@
         const query = input.value;
         if (!query) {
           displayMessage('Search field may not be empty.');
+          localStorage.removeItem('lastSearch');
+          localStorage.removeItem('lastQuery');
           return;
         }
 
@@ -176,23 +196,15 @@
           }
 
           // Process each result
-          response.Search.forEach(result => {
-            const title = result.Title || 'NO TITLE FOUND :(';
-            const year = result.Year || 'Unknown year';
-            const imdb = result.imdbID || null;
-            // TODO: Handle poster being N/A
-            // TODO: Possibly add placeholder image
-            const poster = result.Poster || '';
-
-            results.appendChild(createMovieWrapper(title, year, imdb, poster));
-          });
+          processResults(response.Search);
 
           results.removeChild(spinner);
           searchBtn.disabled = false;
+
+          localStorage.setItem('lastSearch', JSON.stringify(response.Search));
+          localStorage.setItem('lastQuery', query);
         });
       });
-
-      // TODO: Add localStorage caching in beforeunload event
 
       // Clears out the results section
       function clearResults() {
@@ -253,6 +265,20 @@
 
         // Make sure the search button isn't disabled
         searchBtn.disabled = false;
+      }
+
+      // Process an array of search results into DOM elements
+      function processResults(resultsArr) {
+        resultsArr.forEach(result => {
+          const title = result.Title || 'NO TITLE FOUND :(';
+          const year = result.Year || 'Unknown year';
+          const imdb = result.imdbID || null;
+          // TODO: Handle poster being N/A
+          // TODO: Possibly add placeholder image
+          const poster = result.Poster || '';
+
+          results.appendChild(createMovieWrapper(title, year, imdb, poster));
+        });
       }
     </script>
   </body>
