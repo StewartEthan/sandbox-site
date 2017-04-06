@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%
+      var page = page || {};
+      page.title = 'Self-Reflective Journal';
+    %>
+    <% include ../partials/head-tags %>
+
+    <style>
+      main > div > p {
+        margin-bottom: 100px;
+      }
+      p {
+        text-align: justify;
+      }
+      .card {
+        border: 1px solid black;
+        border-radius: 4px;
+        box-shadow: 2px 2px 5px black;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-bottom: 60px;
+        min-height: 225px;
+        padding: 10px 20px;
+      }
+      .content {
+        flex-grow: 1;
+      }
+      .page {
+        color: grey;
+        margin: 10px 0 0;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <% include ../partials/header %>
+      <main>
+        <div>
+          <h1>Self-Reflective Journal</h1>
+          <p>
+            The cards below (which unfortunately do not flip...sorry about that, Br. James!) contain summarized
+            versions of my thoughts and realizations from self-reflection throughout the semester.
+            As each section seemed a little long and boring as just a plain group of paragraph tags,
+            I thought I'd make it a little more easy to read by breaking it into chunks and having
+            you navigate through each one. To advance to the next chunk of text in a section, just
+            click on the text. If you need to go to the previous one, hold shift and click the text.
+            Additionally, if you only read a little bit of a section, then have to close your tab
+            to come back to it later, you will find that if you come back, then it will have remembered
+            where you were in each section.
+          </p>
+          <h2>Time Management</h2>
+          <div class="card" name="time">
+            <p class="content"></p>
+            <p class="page"></p>
+          </div>
+          <h2>Working with Other Programmers</h2>
+          <div class="card" name="collab">
+            <p class="content"></p>
+            <p class="page"></p>
+          </div>
+          <h2>Mentoring</h2>
+          <div class="card" name="mentor">
+            <p class="content"></p>
+            <p class="page"></p>
+          </div>
+        </div>
+      </main>
+      <% include ../partials/footer %>
+    </div>
+
+    <script>
+      const content = {
+        time: [
+          `The hardest lesson I've learned in this area was not to procrastinate. I had some code for the topics done throughout the early part of the semester, but because I neglected to turn any of it in until about week 8, the second half of the semester felt a lot more stressful as I felt I needed to catch up.`,
+          `Thankfully, I managed to do enough work to get to at least the Agree category for most of the topics, but one of the things I've reflected upon is how much less stressful the second half would have been if I had taken an hour or less every week to put in a little bit of work.`,
+          `One thing I've learned from this experience is how important it is for me to properly plan out my time. In this case, I was taking a full credit load in addition to a full-time job and the need to spend time with my wife, and as the end of the semester grew nearer, I had a lot on my plate.`,
+          `After a frustrating week, including the stress I felt in trying to catch up on two months of work for CIT 261, I decided to block out set amounts of time for different assignments, and if I wasn't finished with them at the end of that time block, I would move onto the next one and come back as I had time.`,
+          `I ended up skipping a couple minor assignments in a few classes because of this, but it increased my productivity and helped with the stress.`,
+          `Another thing I learned about myself from those first few weeks of the second half of the semester was how determined I could be to work on a single assignment until I felt it was perfect.`,
+          `I've always prided myself a little on getting good grades, but once I kept getting busier as the semester wore on, it started becoming a downfall. This was another reason I decided to try boxing out chunks of time, and I must say that it not only freed up time I might have spent making minor tweaks to one assignment, but it also probably helped me do better in many assignments overall.`
+        ],
+        collab: [
+          `With the exception of my current job, I've always despised teamwork, heavily preferring to work on my own. This has held especially true in my various programming classes, as I have more often than not ended up in groups where half of the members (or more) have no interest in putting any work in.`,
+          `This would leave me and maybe one or two others to try to do everything. As such, as I've learned more about programming, and have gained more experience between school and work, I've done most of my best work on my own, and in some of my earliest reflections this semester, I realized that those experiences have made me very much dislike working on any app or other code project in a group.`,
+          `Unfortunately, my rather sour attitude about group work followed me into the beginning of the semester. However, with all but one class requiring group work almost every week, I decided to try to ignore that attitude and make this, my last full semester, a positive one in all possible aspects.`,
+          `I am grateful I did, because while I was blessed to have a really good group for this class, I've come to the conclusion that some of my previous issues that led me to dislike programming in a group stemmed from my less-than-ideal attitude about it.`,
+          `While I still prefer working on most non-work projects alone, as it gives me full control over every part, this semester helped me realize that if I make the best of it, I can successfully work well in groups. I only wish I had realized this earlier, I probably could have learned even more from some of my classes.`,
+          `One thing I really liked about opening up to group work this semester was the opportunity to learn how to trust in others to fulfill their assignments for a group project. I'm already comfortable with that at my job (I'm a web developer), but it's a little easier when I know the others working on a project are fully invested.`,
+          `On the other hand, I have often met students who are only interested in passing a class and want to do no more than the minimum towards a project. While I can relate somewhat, it makes it more difficult to learn and also maintain a decent balance in life when having to pick up the slack of others.`,
+          `The group I was a part of for this class was one I quickly grew comfortable with, possibly in part because I was working on having a better attitude, and so that made it easier for me to let go of that, so to speak.`
+        ],
+        mentor: [
+          `To be short and honest, I felt that in the group for this class, I was the most experienced. Saying things like that always makes me feel a little bit awkward, but since this is supposed to be a self-reflective experience, I feel raw honesty is probably the most accurate.`,
+          `This feeling is probably at least somewhat justified, given my employment as a web developer and the exponentially larger amount I've learned in that job than I ever have in school.`,
+          `While my experience was hopefully an asset to my team, I also feel that sometimes it presented the danger of making me arrogant or condescending. I tried my best not to be, but the attitude, as I have mentioned, does make a big difference.`,
+          `I did find a more positive way to direct those occasional thoughts, though. Every chance I saw, I tried to use my knowledge to add depth to my team's understanding of the different topics. In doing so, I learned just how much I truly enjoy helping others learn anything related to programming.`,
+          `I already knew I did enjoy teaching, as I was a TA for Intro to Programming for two years, but teaching on more in-depth topics only increased that desire to help others learn. I also found that in explaining concepts, I would sometimes make a connection I hadn't before.`
+        ]
+      };
+      let shiftDown = false;
+
+      document.querySelectorAll('.card').forEach(card => {
+        const name = card.getAttribute('name');
+        let idx = 0;
+        if (localStorage.getItem(`${name}-bookmark`)) {
+          idx = (+localStorage.getItem(`${name}-bookmark`)) % content[name].length;
+        }
+        card.querySelector('.content').textContent = content[name][idx];
+        card.querySelector('.page').textContent = `${idx+1}/${content[name].length}`;
+        card.addEventListener('click', e => {
+          let index = 0;
+          if (localStorage.getItem(`${name}-bookmark`)) {
+            index = (+localStorage.getItem(`${name}-bookmark`)) % content[name].length;
+          }
+          changeCard(e, name, index);
+        });
+      });
+
+      window.addEventListener('keydown', e => shiftDown = e.shiftKey);
+      window.addEventListener('keyup'  , e => shiftDown = e.shiftKey);
+
+      function changeCard(e, name, index) {
+        let card = e.target;
+        if (!e.target.classList.contains('card')) card = card.parentElement;
+        
+        shiftDown ? index-- : index++;
+        if (index < 0) index = content[name].length - 1;
+        index %= content[name].length;
+
+        card.querySelector('.content').textContent = content[name][index];
+        card.querySelector('.page').textContent = `${index+1}/${content[name].length}`;
+        localStorage.setItem(`${name}-bookmark`, index);
+      }
+    </script>
+  </body>
+</html>
+
+<!--
+- time management
+    - procrastination is killer
+    - last few weeks, planning out tasks more specifically is winner
+    - I apparently have tendency to keep working until perfect, timers help
+  - ability to work with others
+    - usually I prefer working alone
+    - allowing others to fully own parts felt freeing
+    - having the right team helps, but so does having the right attitude
+  - enjoyment of mentoring
+    - I felt like perhaps the most experienced dev on our team
+    - as I answered questions, drew own connections
+  - willingness to learn from team (leave out if no time)
+  -->
