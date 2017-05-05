@@ -1,0 +1,13 @@
+-
+  const links= [
+    { text: "Apps" , href: "/apps"  },
+    { text: "Code" , href: "/code"  },
+    { text: "Blog" , href: "/blog"  },
+    { text: "About", href: "/about" }
+  ];
+nav.print-hide(role="navigation")
+  div
+    //- span Menu
+    ul
+      each link in links
+        li: a(href=link.href)= link.text
