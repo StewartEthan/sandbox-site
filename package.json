@@ -10,6 +10,7 @@
     "gulp": "^3.9.1",
     "gulp-stylus": "^2.6.0",
     "node-fetch": "^1.6.3",
+    "pug": "^2.0.0-rc.1",
     "stylus": "^0.49.1"
   },
   "engines": {
