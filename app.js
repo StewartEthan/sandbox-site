@@ -8,6 +8,7 @@ var app = express();
 
 // Specify the port (I use 3000 as a default for personal dev)
 app.set('port', (process.env.PORT || 3000));
+app.set('viewEngine', (process.env.VIEW_ENGINE || 'pug'))
 
 // Specify where static assets should be loaded from
 app.use(express.static('assets'));
@@ -15,13 +16,14 @@ app.use('/assets', express.static('assets'));
 
 // Set the views and views engine
 app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.set('view engine', app.get('viewEngine'));
+app.locals.basedir = __dirname;
 
 // Set up routes for the app
 // TODO: Use separate routes.js file???
 // main (root) route
 app.get('/', (req,res) => {
-  res.render('home-page');
+  res.render('index');
 });
 // /apps routes
 app.get('/apps', (req,res) => {
