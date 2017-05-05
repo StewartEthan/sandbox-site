@@ -1,53 +1,56 @@
-nav {
-  /*background-color: #114477;*/
-  background-color: #002265;
+nav
+  background-color $primary-blue
+  color white
+  font-family $heading-font
+  font-size 1.5rem
+  text-shadow 1.5px 1.5px 3px black
 
-  div {
-    border-top: 2px solid #D0D0D0;
-    margin: auto;
-    padding: 25px;
-    width: 85%;
+  div
+    // border-top 2px solid #D0D0D0
+    margin auto
+    padding 0 25px 25px
+    width 85%
 
-    ul {
-      list-style-type: none;
-      margin: auto;
-      overflow: hidden;
-      -webkit-padding-start: 0px;
+    span
+      display flex
+      justify-content center
+      padding 0.5rem 0 0
+      text-decoration underline
+      text-transform uppercase
 
-      display: flex;
-      justify-content: space-around;
+    ul
+      list-style-type none
+      margin auto
+      overflow hidden
+      -webkit-padding-start 0px
 
-      li {
-        font-family: "Trebuchet MS", Helvetica, sans-serif;
-        font-size: 16pt;
-        letter-spacing: 2px;
-        text-shadow: 1.5px 1.5px 3px black;
-        text-align: center;
-        width: 25%;
+      display flex
+      flex-wrap wrap
+      justify-content space-between
 
-        a {
-          color: white;
-          cursor: pointer;
-          text-decoration: none;
-          text-transform: uppercase;
-          transition: 250ms;
+      li
+        font-family "Trebuchet MS", Helvetica, sans-serif
+        // font-size 16pt
+        letter-spacing 2px
+        padding 10px 0
+        text-align center
+        width 50%
 
-          &:hover,
-          &:focus {
-            font-weight: 900;
-            letter-spacing: 5px;
-          } /* :hover, :focus */
+        a
+          color white
+          cursor pointer
+          text-decoration none
+          text-transform uppercase
+          transition 250ms
 
-          &:focus {
-            outline: none;
-            text-decoration: underline;
-          } /* :focus */
+          &hover,
+          &focus
+            font-weight 900
+            letter-spacing 5px
 
-          &:visited {
-            color: white;
-          } /* :visited */
-        } /* a */
-      } /* li */
-    } /* ul */
-  } /* div */
-} /* nav */
+          &focus
+            outline none
+            text-decoration underline
+
+          &visited
+            color white
