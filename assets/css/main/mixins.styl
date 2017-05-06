@@ -1,0 +1,8 @@
+// Easily set a breakpoint
+break(size = $tiny, mobileOnly = false)
+  if mobileOnly
+    @media screen and (max-width size)
+      {block}
+  else
+    @media screen and (min-width size)
+      {block}
