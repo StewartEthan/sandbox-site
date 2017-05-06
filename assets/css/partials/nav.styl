@@ -5,11 +5,16 @@ nav
   font-size 1.1rem
   text-shadow 1.5px 1.5px 3px black
 
+  +break()
+    font-size 1.5rem
+  +break($small)
+    flex-grow 1
+
   div
     // border-top 2px solid #D0D0D0
     margin auto
     max-width 500px
-    padding 0 15px 15px
+    padding 15px 15px 0
     width 90%
 
     span
