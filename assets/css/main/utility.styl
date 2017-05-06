@@ -35,20 +35,34 @@ size(w, h = w)
     color red
 
   .fake-link
+    border none
+    background inherit
     color $primary-blue
     cursor pointer
     font-family $heading-font
     font-size 13pt
     text-decoration underline
+  
+  .flex
+    display flex
+
+    &.sp-between
+      justify-content space-between
+    
+    &.sp-around
+      justify-content space-around
 
   .force-block
     display block
 
   .hide
-    display none
+    display none !important
 
   .invis
-    visibility hidden
+    visibility hidden !important
+
+    & > *
+      visibility hidden !important
 
   .spinner
     border 16px solid #f3f3f3
