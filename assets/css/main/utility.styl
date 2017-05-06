@@ -3,6 +3,15 @@ size(w, h = w)
   width w
 
 @media all
+  ul, ol
+    &.no-pad
+      -webkit-padding-start 0
+      -moz-padding-start 0
+      -ms-padding-start 0
+      -o-padding-start 0
+
+      list-style none
+  
   .arrow-list
     list-style none
     margin-left -15px
