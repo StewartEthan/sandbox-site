@@ -1,78 +1,35 @@
-footer {
-  background-color: #002265;
-  /*border-top: 25px solid white;*/
-  bottom: 0;
-  color: white;
-  /*display: block;*/
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
-  font-size: 12pt;
-  height: 40px;
-  margin: 0 auto;
-  padding: 30px;
-  /*position: fixed;*/
-  /*right: 5%;
-  left: 5%;*/
+footer
+  background-color $primary-blue
+  color white
+  font-family $heading-font
+  padding 15px 30px
 
-  ul {
-    overflow: hidden;
-    list-style-type: none;
-    margin: auto;
-    margin-top: 4px;
-    -webkit-padding-start: 0px;
+  a
+    color white
+    cursor pointer
 
-    li {
-      display: inline-block;
-      width: 15%;
-      font-family: "Trebuchet MS", Helvetica, sans-serif;
-      font-size: 12pt;
-      /*color: white;*/
-      text-shadow: 1.5px 1.5px 3px black;
-      /*margin: 0px;*/
-      text-align: left;
+    &:visited
+      // color white
 
-      a {
-        color: white;
-        cursor: pointer;
-        /*background-color: #114477;*/
-        text-decoration: none;
+    &:hover
+      text-decoration underline
+  
+  & > div
+    display flex
+    flex-direction column
 
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    } /* li */
-  } /* ul */
-} /* footer */
+    & > div
+      text-align center
 
-footer ul {
-  overflow: hidden;
-  list-style-type: none;
-  margin: auto;
-  margin-top: 4px;
-  -webkit-padding-start: 0px;
-}
+    .icon-credit
+      font-size 0.65rem
 
-footer ul li {
-  display: inline-block;
-  width: 15%;
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
-  font-size: 12pt;
-  /*color: white;*/
-  text-shadow: 1.5px 1.5px 3px black;
-  /*margin: 0px;*/
-  text-align: left;
-}
+    .social
+      display flex
+      justify-content space-between
+      list-style none
+      margin 15px 0
+      -webkit-padding-start 0
 
-footer ul li a {
-  /*font-family: "Trebuchet MS", Helvetica, sans-serif;*/
-  /*font-size: 12pt;*/
-  color: white;
-  cursor: pointer;
-  /*background-color: #114477;*/
-  text-decoration: none;
-  /*display: inline-block;*/
-}
-
-footer ul li a:hover {
-  text-decoration: underline;
-}
+      img
+        width 25px
