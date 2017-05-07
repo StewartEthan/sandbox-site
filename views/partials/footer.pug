@@ -1,9 +1,9 @@
 -
   const socials = [
-    { href: 'https://twitter.com/EStewart_23'     , icon: '/assets/img/icons/twitter.svg' , title: 'Twitter'  },
-    { href: 'https://github.com/StewartEthan'     , icon: '/assets/img/icons/github.svg'  , title: 'GitHub'   },
-    { href: 'https://linkedin.com/in/stewartethan', icon: '/assets/img/icons/linkedin.svg', title: 'LinkedIn' },
-    { href: 'mailto:eestewart23@gmail.com'        , icon: '/assets/img/icons/email.svg'   , title: 'Email'    }
+    { href: 'https://twitter.com/EStewart_23'     , icon: '/assets/img/icons/twitter.svg' , title: 'Twitter' , target: '_blank' },
+    { href: 'https://github.com/StewartEthan'     , icon: '/assets/img/icons/github.svg'  , title: 'GitHub'  , target: '_blank' },
+    { href: 'https://linkedin.com/in/stewartethan', icon: '/assets/img/icons/linkedin.svg', title: 'LinkedIn', target: '_blank' },
+    { href: 'mailto:eestewart23@gmail.com'        , icon: '/assets/img/icons/email.svg'   , title: 'Email'   , target: ''       }
   ];
   const selfCopy = `&copy;&nbsp;${new Date().getFullYear()}&nbsp;<a href="/about">Ethan Stewart</a>`;
   const iconCredit = `Icons made by <a href="http://www.flaticon.com/authors/dave-gandy" title="Dave Gandy" target="_blank">Dave Gandy</a> from <a href="http://www.flaticon.com" title="Flaticon" target="_blank">FlatIcon</a>.`;// are licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>`;
@@ -14,6 +14,6 @@ footer.print-hide(role="contentinfo")
     ul.social.no-pad
       each link in socials
         li.icon
-          a(href=link.href target="_blank")
+          a(href=link.href target=link.target)
             img(src=link.icon alt=`${link.title} Logo` title=link.title)
     .icon-credit!= iconCredit
