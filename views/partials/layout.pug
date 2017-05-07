@@ -1,0 +1,17 @@
+- const page = {};
+
+doctype html
+html
+  head
+    block head
+      include ./head.pug
+
+  body
+    div.wrapper
+      include ./header.pug
+      main(role="main")
+        div.content
+          block content
+      include ./footer.pug
+    //- To be used for scripts not essential to TTI, for performance sake
+    block scripts
