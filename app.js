@@ -46,17 +46,17 @@ app.get('/about', (req,res) => {
 });
 
 // For CIT 261
-app.get('/cit261', (req,res) => {
-  res.render('cit261/index');
-});
-app.get('/cit261/:topic', (req,res) => {
-  try {
-    res.render(`cit261/${req.params.topic}`);
-  } catch (err) {
-    console.error(`An error occured while trying to render cit261/${req.params.topic}:`, err);
-    res.render('404');
-  }
-});
+// app.get('/cit261', (req,res) => {
+//   res.render('cit261/index');
+// });
+// app.get('/cit261/:topic', (req,res) => {
+//   try {
+//     res.render(`cit261/${req.params.topic}`);
+//   } catch (err) {
+//     console.error(`An error occured while trying to render cit261/${req.params.topic}:`, err);
+//     res.render('404');
+//   }
+// });
 
 app.get('/ebay', (req,res) => {
   res.header('Access-Control-Allow-Origin', '*');
