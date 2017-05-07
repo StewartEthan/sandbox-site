@@ -1,0 +1,57 @@
+extends /views/partials/layout.pug
+
+prepend head
+  - page.title = 'Home';
+
+block content
+  h1 Home Page
+  .flex.sp-between
+    p.
+      This website is basically my web development sandbox. I make no
+      guarantees on how often new stuff will be added, but anytime I
+      create something I find cool or useful, it will be added to its
+      appropriate part of the site. <strong>For now, nothing is fully complete besides this
+      home page because I'm doing a major reworking of the platform on
+      which this site is built.</strong> If you click on any of the links in the
+      navigation above, you will see at least a landing page explaining
+      the purpose of that area of the site. Feel free to reach out to me
+      using any of the icons in the footer below if you have any questions,
+      feedback, or suggestions.
+    .twitter-wrapper
+      button.fake-link Hide Twitter feed
+      div <a class="twitter-timeline hide" data-lang="en" data-width="300" data-height="280" data-dnt="true" data-theme="dark" href="https://twitter.com/EStewart_23">Tweets by EStewart_23</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+  style.
+    main > .content .flex > p {
+      margin: 0;
+      max-width: 450px;
+      text-align: justify;
+    }
+    .twitter-wrapper {
+      min-width: 300px;
+      position: relative;
+    }
+    @media screen and (max-width: 900px) {
+      .twitter-wrapper {
+        display: none;
+      }
+
+      main > .content .flex > p {
+        max-width: 100%;
+      }
+    }
+    .twitter-wrapper > button {
+      position: absolute;
+      top: -2rem;
+      text-align: right;
+      width: 100%;
+    }
+  
+block scripts
+  script.
+    var toggleTwitter = document.querySelector('.twitter-wrapper > button');
+    toggleTwitter.addEventListener('click', function(e) {
+      var text = toggleTwitter.textContent;
+      var twitter = toggleTwitter.nextElementSibling;
+      twitter.classList.toggle('invis');
+      toggleTwitter.textContent = text === 'Show Twitter feed' ? 'Hide Twitter feed' : 'Show Twitter feed'
+    });
